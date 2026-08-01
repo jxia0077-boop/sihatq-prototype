@@ -8,6 +8,9 @@ type RiskContext = {
   recommendations?: { title: string; description: string }[];
 } | null;
 
+const SYSTEM_PROMPT =
+  "You are SihatQ AI Assistant for Malaysia preventive health education. Only use the provided context. Never diagnose disease. Always remind users this is not medical advice. Keep answers concise, friendly, and practical. Prefer English unless the user writes Chinese.";
+
 function buildFallbackAnswer(
   question: string,
   risk: RiskContext,
@@ -62,48 +65,136 @@ async function callOpenAI(prompt: string): Promise<string | null> {
       model: process.env.OPENAI_MODEL || "gpt-4o-mini",
       temperature: 0.3,
       messages: [
-        {
-          role: "system",
-          content:
-            "You are SihatQ AI Assistant for Malaysia preventive health education. Only use the provided context. Never diagnose disease. Always remind users this is not medical advice. Keep answers concise and practical.",
-        },
+        { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
       ],
     }),
   });
 
-  if (!response.ok) return null;
+  if (!response.ok) {
+    console.error("OpenAI error", response.status, await response.text());
+    return null;
+  }
   const data = await response.json();
   return data.choices?.[0]?.message?.content?.trim() || null;
 }
 
+/** 豆包 / 火山方舟 — https://console.volcengine.com/ark */
+async function callDoubao(prompt: string): Promise<string | null> {
+  const key =
+    process.env.DOUBAO_API_KEY ||
+    process.env.ARK_API_KEY ||
+    process.env.VOLC_API_KEY;
+  const model =
+    process.env.DOUBAO_MODEL ||
+    process.env.ARK_MODEL ||
+    process.env.DOUBAO_ENDPOINT_ID;
+  if (!key || !model) return null;
+
+  const baseUrl =
+    process.env.DOUBAO_BASE_URL ||
+    "https://ark.cn-beijing.volces.com/api/v3";
+
+  const response = await fetch(`${baseUrl}/chat/completions`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.3,
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: prompt },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    console.error("Doubao/ARK error", response.status, await response.text());
+    return null;
+  }
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content?.trim() || null;
+}
+
+/** Free-tier friendly: Groq (Llama) — https://console.groq.com */
+async function callGroq(prompt: string): Promise<string | null> {
+  const key = process.env.GROQ_API_KEY;
+  if (!key) return null;
+
+  const response = await fetch(
+    "https://api.groq.com/openai/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
+        temperature: 0.3,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: prompt },
+        ],
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    console.error("Groq error", response.status, await response.text());
+    return null;
+  }
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content?.trim() || null;
+}
+
+/** Free-tier friendly: Google Gemini — https://aistudio.google.com/apikey */
 async function callGemini(prompt: string): Promise<string | null> {
   const key =
     process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!key) return null;
 
-  const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        systemInstruction: {
-          parts: [
-            {
-              text: "You are SihatQ AI Assistant for Malaysia preventive health education. Only use the provided context. Never diagnose disease. Always remind users this is not medical advice. Keep answers concise and practical.",
-            },
-          ],
-        },
-      }),
-    },
-  );
+  const models = [
+    process.env.GEMINI_MODEL,
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-2.5-flash",
+    "gemini-flash-latest",
+  ].filter(Boolean) as string[];
 
-  if (!response.ok) return null;
-  const data = await response.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
+  const fullPrompt = `${SYSTEM_PROMPT}\n\n${prompt}`;
+
+  for (const model of models) {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      console.error(
+        "Gemini error",
+        model,
+        response.status,
+        await response.text(),
+      );
+      continue;
+    }
+
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (text) return text;
+  }
+
+  return null;
 }
 
 export async function answerWithLightRag(
@@ -127,10 +218,14 @@ export async function answerWithLightRag(
     "Retrieved public knowledge:",
     ...chunks.map((c) => `- [${c.source}] ${c.content}`),
     `User question: ${question}`,
+    "Write a helpful answer using only this context.",
   ].join("\n");
 
+  // Prefer Gemini for now (switch order later if using Doubao)
   const llm =
     (await callGemini(context)) ||
+    (await callDoubao(context)) ||
+    (await callGroq(context)) ||
     (await callOpenAI(context));
 
   if (llm) {
