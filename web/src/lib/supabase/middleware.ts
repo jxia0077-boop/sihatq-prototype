@@ -42,7 +42,9 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/recommendations") ||
     pathname.startsWith("/result-detail") ||
     pathname.startsWith("/reminders") ||
-    pathname.startsWith("/api/assess");
+    pathname.startsWith("/ai-assistant") ||
+    pathname.startsWith("/api/assess") ||
+    pathname.startsWith("/api/ai-chat");
 
   const isAuthPage =
     pathname.startsWith("/login") || pathname.startsWith("/sign-up");

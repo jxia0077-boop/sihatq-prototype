@@ -101,6 +101,12 @@ export default async function RiskInsightPage() {
             <span className="material-symbols-outlined">arrow_forward</span>
           </Link>
           <Link
+            href="/ai-assistant"
+            className="flex flex-1 items-center justify-center gap-2 rounded-full border border-outline-variant py-4 font-semibold text-primary"
+          >
+            Ask AI Assistant
+          </Link>
+          <Link
             href="/result-detail"
             className="flex flex-1 items-center justify-center gap-2 rounded-full border border-outline-variant py-4 font-semibold text-primary"
           >

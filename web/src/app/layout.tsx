@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Lexend } from "next/font/google";
+import { AiChatWidget } from "@/components/AiChatWidget";
 import "./globals.css";
 
 const inter = Inter({
@@ -33,6 +34,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full font-sans text-on-surface antialiased">
         {children}
+        <AiChatWidget />
       </body>
     </html>
   );
