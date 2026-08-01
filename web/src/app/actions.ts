@@ -19,11 +19,7 @@ export async function acceptPrivacy() {
     redirect("/login");
   }
 
-  // Soft marker: privacy acceptance is also stamped when profile is saved.
-  // Keep a lightweight user metadata flag for routing UX.
-  await supabase.auth.updateUser({
-    data: { privacy_accepted: true },
-  });
-
+  // Skip remote auth metadata update here — it caused a noticeable wait.
+  // Privacy consent is recorded when the profile is saved (privacy_accepted_at).
   redirect("/profile");
 }
