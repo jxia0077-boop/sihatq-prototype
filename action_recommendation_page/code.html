@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>SihatQ - Preventive Action Plan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#00201d",
+                    "error": "#ba1a1a",
+                    "on-secondary-container": "#5b6760",
+                    "surface-tint": "#006a61",
+                    "outline-variant": "#bcc9c6",
+                    "primary-container": "#008378",
+                    "on-surface-variant": "#3d4947",
+                    "surface-dim": "#cbdbf5",
+                    "inverse-primary": "#6bd8cb",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#fefcff",
+                    "surface-container": "#e5eeff",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f8f9ff",
+                    "outline": "#6d7a77",
+                    "on-secondary-fixed-variant": "#3e4943",
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed": "#d9e6dd",
+                    "on-background": "#0b1c30",
+                    "on-primary-fixed-variant": "#005049",
+                    "primary-fixed": "#89f5e7",
+                    "on-secondary-fixed": "#131e19",
+                    "tertiary-fixed": "#dae2fd",
+                    "tertiary-container": "#6c748b",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "surface-variant": "#d3e4fe",
+                    "secondary-fixed-dim": "#bdcac1",
+                    "primary": "#00685f",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#545c72",
+                    "surface": "#f8f9ff",
+                    "on-tertiary-fixed": "#131b2e",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "secondary": "#55615a",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-container": "#d9e6dd",
+                    "on-primary-container": "#f4fffc",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "2xl": "48px",
+                    "sm": "12px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "base": "4px",
+                    "xs": "8px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Lexend"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Lexend"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Lexend"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 104, 95, 0.1);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Top App Bar (Shared Component) -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-container-low shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-gutter py-xs max-w-7xl mx-auto">
+<a class="text-primary dark:text-primary-fixed-dim p-2 hover:bg-secondary-container/50 transition-colors rounded-full active:scale-95" href="../risk_insight_page/code.html" aria-label="Back to risk insight">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">SihatQ</h1>
+<a class="text-primary dark:text-primary-fixed-dim p-2 hover:bg-secondary-container/50 transition-colors rounded-full active:scale-95" href="../login_page/code.html" aria-label="Log in">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</a>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-gutter md:px-margin-desktop py-xl pb-32">
+<!-- Hero Section / Header -->
+<section class="mb-xl text-center md:text-left">
+<div class="inline-flex items-center px-4 py-1.5 rounded-full bg-secondary-container text-primary mb-4">
+<span class="material-symbols-outlined text-[18px] mr-2" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm">PERSONALIZED FOR YOU</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-background mb-2">Your Action Plan</h2>
+<p class="text-on-surface-variant max-w-2xl">Based on your recent health assessment, we've curated these high-impact steps to improve your long-term wellness.</p>
+</section>
+<!-- Recommendation Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Card 1: Blood Pressure Screening -->
+<div class="group relative overflow-hidden rounded-2xl p-lg flex flex-col justify-between bg-surface-container-lowest shadow-lg border-t-4 border-error hover:shadow-xl transition-all duration-300 md:col-span-1">
+<div>
+<div class="flex justify-between items-start mb-md">
+<div class="w-12 h-12 rounded-xl bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[28px]" data-icon="medical_services">medical_services</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">High Priority</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Book a Blood Pressure Screening</h3>
+<p class="text-on-surface-variant mb-xl">Your last reading was slightly elevated. Early detection is key to managing cardiovascular health effectively.</p>
+</div>
+<a class="w-full flex items-center justify-center gap-2 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-full hover:shadow-[0_4px_12px_rgba(0,104,95,0.3)] transition-all active:scale-[0.98]" href="../reminder_setup_page/code.html">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+                    Find nearest clinic
+                </a>
+</div>
+<!-- Card 2: Sugary Drinks -->
+<div class="group relative overflow-hidden rounded-2xl p-lg flex flex-col justify-between bg-surface-container-lowest shadow-lg border-t-4 border-secondary transition-all duration-300 md:col-span-1">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-secondary-container/30 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500"></div>
+<div>
+<div class="flex justify-between items-start mb-md relative">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[28px]" data-icon="no_drinks">no_drinks</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Reduce Sugary Drinks</h3>
+<div class="flex items-start gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary mt-1" data-icon="lightbulb">lightbulb</span>
+<p class="text-on-surface-variant font-body-md text-body-md"><strong class="text-on-surface">Pro-Tip:</strong> Swap 1 soda for water daily to reduce intake by up to 15kg of sugar per year.</p>
+</div>
+</div>
+<div class="mt-xl flex items-center justify-between text-on-surface-variant">
+<span class="text-label-sm font-label-sm italic">Impact: Metabolic Health</span>
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+<!-- Card 3: 10,000 Steps -->
+<div class="group relative overflow-hidden rounded-2xl p-lg flex flex-col justify-between bg-primary-container text-on-primary-container shadow-lg md:col-span-1">
+
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-md">
+<div class="w-12 h-12 rounded-xl bg-on-primary-container/10 flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[28px]" data-icon="directions_walk">directions_walk</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">10,000 Steps Daily</h3>
+<p class="opacity-90 mb-xl">Consistent movement regulates blood sugar and improves mental clarity. Aim for small walk breaks every 2 hours.</p>
+</div>
+<a class="relative z-10 w-full flex items-center justify-center gap-2 py-3 bg-surface text-primary font-label-md text-label-md rounded-full hover:bg-surface-bright transition-all active:scale-[0.98]" href="../reminder_setup_page/code.html">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+                    Connect health app
+                </a>
+</div>
+</div>
+<!-- Medical Advisory Note -->
+<div class="mt-xl p-md flex items-center gap-4 bg-surface-container-high rounded-xl border-l-4 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Note: Consult a clinic/doctor for a professional diagnosis. These recommendations are based on self-reported data and are for educational purposes only.</p>
+</div>
+<!-- Primary Actions -->
+<div class="mt-2xl flex flex-col md:flex-row gap-md items-center justify-center">
+<a class="w-full md:w-auto px-8 py-4 border-2 border-primary text-primary font-headline-md rounded-full hover:bg-primary/5 transition-colors flex items-center justify-center gap-3" href="../result_detail_page/code.html">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                Save My Report
+            </a>
+<a class="w-full md:w-auto px-12 py-4 bg-primary text-on-primary font-headline-md rounded-full shadow-lg hover:shadow-primary/20 transition-all flex items-center justify-center gap-3 active:scale-95" href="../dashboard_page/code.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+                Back to Home
+            </a>
+</div>
+<!-- Decorative Illustration Element -->
+<div class="mt-2xl flex justify-center opacity-40">
+<div class="relative w-full max-w-sm h-64 overflow-hidden rounded-3xl">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist medical illustration featuring abstract healthcare symbols like a heart pulse, a water drop, and a sneaker, floating in a serene soft teal environment with gentle studio lighting and premium 3D textures, reflecting a modern healthcare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBul6dWfAOhzvMOa7IhcFIUBs_0BC8UO5IbMbhQFA6hXgQuKLjaPGcEHCE3OmNwxLsUm7oPMH9kcdT2PuRvf_1p0zbpt89rHyM_B1qSoOuJSHmAYI7-vSJ8vaVfekTJqEIgqG50WhAFeO-vvlnhlh2hkW17i3eCussmHEt8hGX29-BJpxKQms6l5uZ9pZYh3i0Wa0SLTLwPbqRFhE_qQRV_fFR9iGn7Yu_cY_Km-wA0GIsNzHiASABd"/>
+</div>
+</div>
+</main>
+<!-- Navigation Shell (BottomNavBar) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest dark:bg-surface-container shadow-lg rounded-t-xl md:hidden">
+<div class="flex justify-around items-center px-4 py-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="../dashboard_page/code.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="../profile_input_page/code.html">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-sm text-label-sm">Assess</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="../risk_insight_page/code.html">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed-variant rounded-full px-4 py-1" href="code.html">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-label-sm text-label-sm">Actions</span>
+</a>
+</div>
+</nav>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Simple visibility observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.grid > div').forEach(card => {
+            card.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

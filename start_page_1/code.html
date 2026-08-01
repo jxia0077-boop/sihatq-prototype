@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SihatQ - Know Your Health Risks Today</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00201d",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#5b6760",
+                        "surface-tint": "#006a61",
+                        "outline-variant": "#bcc9c6",
+                        "primary-container": "#008378",
+                        "on-surface-variant": "#3d4947",
+                        "surface-dim": "#cbdbf5",
+                        "inverse-primary": "#6bd8cb",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#fefcff",
+                        "surface-container": "#e5eeff",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9ff",
+                        "outline": "#6d7a77",
+                        "on-secondary-fixed-variant": "#3e4943",
+                        "background": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary-fixed": "#d9e6dd",
+                        "on-background": "#0b1c30",
+                        "on-primary-fixed-variant": "#005049",
+                        "primary-fixed": "#89f5e7",
+                        "on-secondary-fixed": "#131e19",
+                        "tertiary-fixed": "#dae2fd",
+                        "tertiary-container": "#6c748b",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-variant": "#d3e4fe",
+                        "secondary-fixed-dim": "#bdcac1",
+                        "primary": "#00685f",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#545c72",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-fixed": "#131b2e",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "secondary": "#55615a",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-container": "#d9e6dd",
+                        "on-primary-container": "#f4fffc",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "2xl": "48px",
+                        "sm": "12px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "base": "4px",
+                        "xs": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Lexend"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Lexend"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Lexend"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Lexend"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 70% 30%, rgba(0, 104, 95, 0.08) 0%, transparent 60%);
+        }
+        .bento-card {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+        }
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: subtle-float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-container-low shadow-sm dark:shadow-none">
+<nav class="flex justify-between items-center px-gutter py-xs max-w-7xl mx-auto">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">SihatQ</span>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<a class="text-primary font-label-md hover:bg-secondary-container/50 px-4 py-2 rounded-full transition-colors" href="code.html">Home</a>
+<a class="text-on-surface-variant font-label-md hover:bg-secondary-container/50 px-4 py-2 rounded-full transition-colors" href="../profile_input_page/code.html">Assess</a>
+<a class="text-on-surface-variant font-label-md hover:bg-secondary-container/50 px-4 py-2 rounded-full transition-colors" href="../risk_insight_page/code.html">Insights</a>
+<a class="text-on-surface-variant font-label-md hover:bg-secondary-container/50 px-4 py-2 rounded-full transition-colors" href="../action_recommendation_page/code.html">Actions</a>
+</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant p-2 rounded-full hover:bg-secondary-container/50 transition-colors" data-icon="search">search</button>
+<a class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-secondary-container/50 transition-colors active:scale-95 duration-200" data-icon="account_circle" href="../login_page/code.html" aria-label="Log in">account_circle</a>
+</div>
+</nav>
+</header>
+<main class="max-w-7xl mx-auto px-gutter md:px-margin-desktop py-xl">
+<!-- Hero Section -->
+<section class="relative grid grid-cols-1 lg:grid-cols-12 gap-xl items-center py-xl md:py-2xl hero-gradient rounded-3xl overflow-hidden">
+<div class="lg:col-span-7 flex flex-col items-start gap-md z-10">
+<div class="inline-flex items-center gap-xs bg-secondary-container text-on-secondary-fixed-variant px-4 py-1.5 rounded-full animate-bounce">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified_user">verified_user</span>
+<span class="text-label-sm font-label-sm">Kementerian Kesihatan Standard</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl lg:text-[56px] lg:leading-[64px] text-on-background">
+                    SihatQ: Know Your <span class="text-primary">Health Risks</span> Today
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    A personalised health insight platform tailored for Malaysians. Gain professional medical clarity using our AI-driven assessment tool in under 60 seconds.
+                </p>
+<div class="flex flex-wrap gap-md mt-lg">
+<a class="bg-primary text-on-primary px-8 py-4 rounded-full font-headline-md text-headline-md flex items-center gap-sm shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95" href="../sign_up_page/code.html">
+                        Start Free Assessment
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<a class="border-2 border-outline-variant text-on-surface-variant px-8 py-4 rounded-full font-headline-md text-headline-md hover:bg-surface-variant transition-colors" href="#features">
+                        Learn More
+                    </a>
+</div>
+<!-- Trust Badges / Social Proof -->
+<div class="mt-xl pt-lg border-t border-outline-variant/30 w-full">
+<p class="text-label-sm font-label-sm text-on-surface-variant opacity-70 mb-sm">TRUSTED BY 50,000+ MALAYSIANS</p>
+<div class="flex gap-lg items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+<span class="font-bold text-headline-md tracking-tighter">KLHealth</span>
+<span class="font-bold text-headline-md tracking-tighter">MyWellness</span>
+<span class="font-bold text-headline-md tracking-tighter">MedCity</span>
+</div>
+</div>
+</div>
+<!-- Hero Image / Visual Anchor -->
+<div class="lg:col-span-5 relative h-[400px] lg:h-[600px] flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+<div class="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl z-10 border-4 border-white dark:border-surface-container-high">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A portrait of a friendly, smiling Malaysian healthcare professional wearing a clean white lab coat and a teal stethoscope around her neck. She is standing in a bright, modern medical facility with soft sunlight filtering through glass windows. The overall aesthetic is professional, clean, and trustworthy, with a soft blur in the background to emphasize the person. The lighting is high-key and optimistic, reflecting a modern light-mode design system." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB8MX5IrV24GUbiqSd0gbTmzsptf3mHKddWJuOlj9lRrkVRXC5ClCie54oAT_jCvqprZzvyot9SmDE9g7wXZCOc-iu-ANGU_UIhcYbZG58DDqbQt-RCe_FnErhEgd43k2xnmUosk7btHFfNjtwzKVqGZLzLIXbT0NDMAO7C4eHzjNxIFfdmLgBgblffS05_EN7yTXNwCAAlcR2RMCZST9jdz5dY9yRoZZK-dqPXcG_ReJLSCtMAbeI7')">
+</div>
+<!-- Floating Stat Cards -->
+<div class="absolute top-8 -left-4 md:-left-8 bg-surface-container-lowest p-md rounded-2xl shadow-xl animate-float border border-primary/10">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[20px]" data-icon="monitor_heart">monitor_heart</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Heart Score</p>
+<p class="font-bold text-primary">Excellent</p>
+</div>
+</div>
+</div>
+<div class="absolute bottom-12 -right-4 bg-surface-container-lowest p-md rounded-2xl shadow-xl animate-float border border-primary/10" style="animation-delay: 1s;">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[20px]" data-icon="shield">shield</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Security</p>
+<p class="font-bold text-on-background">PDPA Compliant</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Features Section -->
+<section class="py-2xl" id="features">
+<div class="flex flex-col md:flex-row justify-between items-end mb-xl gap-md">
+<div class="max-w-2xl">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-sm">Engineered for Your Well-being</h2>
+<p class="text-body-lg text-on-surface-variant">Our platform combines medical expertise with advanced data science to provide you with insights you can trust.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Feature 1: 1-min check -->
+<div class="bento-card bg-surface-container-low p-xl rounded-3xl flex flex-col gap-md border border-transparent hover:border-primary/20">
+<div class="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[32px]" data-icon="timer">timer</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">1-min check</h3>
+<p class="text-on-surface-variant">Rapid screening technology designed for busy lifestyles. Get your results before your morning coffee is ready.</p>
+</div>
+<div class="mt-auto pt-md flex items-center text-primary font-label-md gap-xs cursor-pointer group">
+                        See how it works 
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Feature 2: Data-driven -->
+<div class="bento-card bg-primary-container text-on-primary-container p-xl rounded-3xl flex flex-col gap-md">
+<div class="w-14 h-14 rounded-2xl bg-on-primary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="analytics">analytics</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md mb-xs">Data-driven</h3>
+<p class="opacity-90">Validated by clinical research and localized for the Malaysian demographic profile for superior accuracy.</p>
+</div>
+<div class="mt-auto pt-md flex items-center font-label-md gap-xs cursor-pointer group">
+                        Explore our methodology 
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Feature 3: Private & Secure -->
+<div class="bento-card bg-surface-container-low p-xl rounded-3xl flex flex-col gap-md border border-transparent hover:border-primary/20">
+<div class="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[32px]" data-icon="lock">lock</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Private &amp; Secure</h3>
+<p class="text-on-surface-variant">Your health data is encrypted end-to-end. We adhere to strict PDPA regulations to keep your identity safe.</p>
+</div>
+<div class="mt-auto pt-md flex items-center text-primary font-label-md gap-xs cursor-pointer group">
+                        Security details 
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Dynamic Assessment Teaser -->
+<section class="bg-inverse-surface text-inverse-on-surface rounded-3xl p-xl md:p-2xl overflow-hidden relative">
+<div class="absolute right-0 top-0 w-1/3 h-full opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[300px] -mr-32 -mt-16" data-icon="medical_services">medical_services</span>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row gap-xl items-center">
+<div class="flex-1">
+<h2 class="font-headline-lg text-headline-lg mb-md">Ready to take the first step?</h2>
+<p class="text-body-lg opacity-80 mb-xl max-w-xl">Join thousands of Malaysians who are taking control of their health journey with SihatQ. No blood tests or appointments required for the initial assessment.</p>
+<div class="grid grid-cols-2 gap-md max-w-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="check_circle">check_circle</span>
+<span class="text-label-md">Personalized Plan</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="check_circle">check_circle</span>
+<span class="text-label-md">Local Specialists</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="check_circle">check_circle</span>
+<span class="text-label-md">Zero Cost</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="check_circle">check_circle</span>
+<span class="text-label-md">PDF Report</span>
+</div>
+</div>
+</div>
+<div class="flex-none">
+<a class="bg-primary-fixed text-on-primary-fixed px-10 py-5 rounded-full font-headline-md text-headline-md shadow-xl hover:scale-105 transition-transform inline-flex" href="../sign_up_page/code.html">
+                        Start Assessment Now
+                    </a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Space for Bottom Nav padding -->
+<div class="h-24 md:hidden"></div>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest dark:bg-surface-container shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)] rounded-t-xl flex justify-around items-center px-4 py-2 pb-safe">
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed-variant rounded-full px-4 py-1 active:scale-90 transition-transform duration-150" href="code.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 transition-transform duration-150" href="../profile_input_page/code.html">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-sm text-label-sm">Assess</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 transition-transform duration-150" href="../risk_insight_page/code.html">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 transition-transform duration-150" href="../action_recommendation_page/code.html">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-label-sm text-label-sm">Actions</span>
+</a>
+</nav>
+<footer class="hidden md:block bg-surface-container-low py-xl mt-2xl border-t border-outline-variant/20">
+<div class="max-w-7xl mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-xl">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-xs mb-md">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-headline-md text-headline-md text-primary font-bold">SihatQ</span>
+</div>
+<p class="text-label-sm text-on-surface-variant opacity-80">Empowering Malaysians through accessible health intelligence and proactive care management.</p>
+</div>
+<div>
+<h4 class="font-label-md text-on-background mb-md">Platform</h4>
+<ul class="flex flex-col gap-xs text-label-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="../profile_input_page/code.html">Assessment</a></li>
+<li><a class="hover:text-primary" href="../dashboard_page/code.html">Health Records</a></li>
+<li><a class="hover:text-primary" href="../risk_insight_page/code.html">Risk Indicators</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-on-background mb-md">Resources</h4>
+<ul class="flex flex-col gap-xs text-label-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="../privacy_notice_page/code.html">Privacy Policy</a></li>
+<li><a class="hover:text-primary" href="../risk_insight_page/code.html">Clinical Standards</a></li>
+<li><a class="hover:text-primary" href="../action_recommendation_page/code.html">Contact Support</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-md text-on-background mb-md">Connect</h4>
+<div class="flex gap-sm">
+<button class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="share">share</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-margin-desktop mt-xl pt-md border-t border-outline-variant/10 text-center text-label-sm text-on-surface-variant opacity-60">
+            © 2024 SihatQ Healthcare Malaysia. All Rights Reserved.
+        </div>
+</footer>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

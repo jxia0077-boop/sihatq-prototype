@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SihatQ | Analyzing Health Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Lexend:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-tertiary-container": "#fefcff",
+                    "on-secondary-container": "#5b6760",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-fixed-variant": "#3e4943",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-primary-container": "#f4fffc",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-fixed-variant": "#005049",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "on-primary-fixed": "#00201d",
+                    "inverse-primary": "#6bd8cb",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#131b2e",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#131e19",
+                    "secondary-container": "#d9e6dd",
+                    "outline-variant": "#bcc9c6",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "outline": "#6d7a77",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed": "#89f5e7",
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#545c72",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "on-background": "#0b1c30",
+                    "secondary": "#55615a",
+                    "tertiary-fixed": "#dae2fd",
+                    "tertiary-container": "#6c748b",
+                    "secondary-fixed-dim": "#bdcac1",
+                    "on-surface-variant": "#3d4947",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed": "#d9e6dd",
+                    "surface-bright": "#f8f9ff",
+                    "primary": "#00685f",
+                    "surface-container": "#e5eeff",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#006a61",
+                    "primary-container": "#008378"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "sm": "12px",
+                    "2xl": "48px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "md": "16px",
+                    "xs": "8px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Lexend"],
+                    "headline-xl": ["Lexend"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "headline-md": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes pulse-ring {
+            0% { transform: scale(.33); }
+            80%, 100% { opacity: 0; }
+        }
+        @keyframes pulse-dot {
+            0% { transform: scale(.8); }
+            50% { transform: scale(1); }
+            100% { transform: scale(.8); }
+        }
+        .loading-ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+        .loading-ring::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: -20px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-color: #00685f;
+            opacity: 0.1;
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        .loading-ring::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #008378;
+            box-shadow: 0 0 20px rgba(0, 131, 120, 0.2);
+            animation: pulse-dot 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #00685f 0%, #00bfa5 50%, #00685f 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+        .progress-indicator {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            animation: progress-load 4s ease-in-out forwards;
+        }
+        @keyframes progress-load {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-direction-col overflow-hidden">
+<!-- Subtle Background Shader Overlay -->
+<div class="fixed inset-0 pointer-events-none opacity-20">
+
+</div>
+<!-- Main Content Canvas -->
+<main class="relative z-10 w-full flex flex-col items-center justify-center px-gutter min-h-screen">
+<!-- Logo Container -->
+<div class="mb-2xl flex flex-col items-center gap-md">
+<div class="loading-ring flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[48px] relative z-20" style="font-variation-settings: 'FILL' 1;">
+                    health_and_safety
+                </span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">SihatQ</h1>
+</div>
+<!-- Status Information -->
+<div class="text-center max-w-md mx-auto space-y-md">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg shimmer-text">
+                Analyzing your health profile...
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">
+                Our AI is personalizing your risk insights based on NHMS 2019 data. This usually takes a few seconds.
+            </p>
+</div>
+<!-- Dynamic Circular Progress -->
+<div class="mt-2xl relative w-16 h-16">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-secondary-container" cx="32" cy="32" fill="transparent" r="30" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary progress-indicator" cx="32" cy="32" fill="transparent" r="30" stroke="currentColor" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-label-sm text-label-sm text-primary" id="percent-count">0%</span>
+</div>
+</div>
+<!-- Floating Data Particles (Bento Logic: Information Architecture) -->
+<div class="mt-2xl grid grid-cols-2 md:grid-cols-3 gap-sm opacity-60">
+<div class="bg-surface-container-low px-md py-xs rounded-full border border-outline-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">data_thresholding</span>
+<span class="font-label-sm text-label-sm">Risk Assessment</span>
+</div>
+<div class="bg-surface-container-low px-md py-xs rounded-full border border-outline-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">analytics</span>
+<span class="font-label-sm text-label-sm">NHMS Benchmarking</span>
+</div>
+<div class="bg-surface-container-low px-md py-xs rounded-full border border-outline-variant flex items-center gap-xs hidden md:flex">
+<span class="material-symbols-outlined text-[18px] text-primary">clinical_notes</span>
+<span class="font-label-sm text-label-sm">Lifestyle Mapping</span>
+</div>
+</div>
+</main>
+<!-- Interactive Layer: Processing Simulation -->
+<script>
+        const percentCount = document.getElementById('percent-count');
+        let progress = 0;
+        
+        const updateProgress = () => {
+            if (progress < 100) {
+                // Realistic variable speed for processing feel
+                const increment = Math.random() * 5;
+                progress = Math.min(100, progress + increment);
+                percentCount.innerText = `${Math.floor(progress)}%`;
+                
+                const delay = Math.random() * 300 + 100;
+                setTimeout(updateProgress, delay);
+            } else {
+                percentCount.innerText = '100%';
+                setTimeout(() => {
+                    window.location.href = '../risk_insight_page/code.html';
+                }, 700);
+            }
+        };
+
+        window.onload = () => {
+            updateProgress();
+        };
+
+        // Micro-interaction: Subtle mouse parallax on the status text
+        document.addEventListener('mousemove', (e) => {
+            const h2 = document.querySelector('h2');
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            h2.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    </script>
+<!-- Footer Identity (Non-navigational to maintain focus) -->
+<div class="fixed bottom-lg w-full text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-50 tracking-widest uppercase">
+            Trusted by Malaysian Ministry of Health Frameworks
+        </p>
+</div>
+</body></html>

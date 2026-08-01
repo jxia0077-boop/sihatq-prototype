@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Join SihatQ - Personalized Health Wellness</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Lexend:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-tertiary-container": "#fefcff",
+                    "on-secondary-container": "#5b6760",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-fixed-variant": "#3e4943",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-primary-container": "#f4fffc",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-fixed-variant": "#005049",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "on-primary-fixed": "#00201d",
+                    "inverse-primary": "#6bd8cb",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#131b2e",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#131e19",
+                    "secondary-container": "#d9e6dd",
+                    "outline-variant": "#bcc9c6",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "outline": "#6d7a77",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed": "#89f5e7",
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#545c72",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "on-background": "#0b1c30",
+                    "secondary": "#55615a",
+                    "tertiary-fixed": "#dae2fd",
+                    "tertiary-container": "#6c748b",
+                    "secondary-fixed-dim": "#bdcac1",
+                    "on-surface-variant": "#3d4947",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed": "#d9e6dd",
+                    "surface-bright": "#f8f9ff",
+                    "primary": "#00685f",
+                    "surface-container": "#e5eeff",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#006a61",
+                    "primary-container": "#008378"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "sm": "12px",
+                    "2xl": "48px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "md": "16px",
+                    "xs": "8px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Lexend"],
+                    "headline-xl": ["Lexend"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "headline-md": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Smooth reveal for the form */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-reveal {
+            animation: slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col items-center justify-center relative overflow-x-hidden">
+<!-- Background Decorative Elements (Modern & Subtle) -->
+<div class="fixed inset-0 -z-10 overflow-hidden">
+<div class="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] rounded-full bg-primary-fixed/20 blur-[120px]"></div>
+<div class="absolute -bottom-[5%] -left-[5%] w-[40%] h-[40%] rounded-full bg-secondary-container/30 blur-[100px]"></div>
+</div>
+<!-- Main Content Container -->
+<main class="w-full max-w-md px-margin-mobile md:px-0 py-xl animate-reveal">
+<!-- Branding Header -->
+<div class="flex flex-col items-center mb-xl text-center">
+<div class="mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-[40px]" data-icon="health_and_safety">health_and_safety</span>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">SihatQ</h1>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Create Account</h2>
+<p class="text-on-surface-variant font-body-md">Start your personalized health journey today.</p>
+</div>
+<!-- Sign Up Form Card -->
+<div class="glass-panel border border-outline-variant/30 rounded-2xl p-lg shadow-xl shadow-primary/5">
+<form class="space-y-lg" id="signupForm">
+<!-- Full Name -->
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="fullName">Full Name</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<input class="w-full pl-[44px] pr-md py-sm bg-secondary-container/40 border-0 rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface transition-all placeholder:text-on-surface-variant/50 text-body-md" id="fullName" name="fullName" placeholder="Ahmad Bin Abdullah" required="" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="email">Email Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</div>
+<input class="w-full pl-[44px] pr-md py-sm bg-secondary-container/40 border-0 rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface transition-all placeholder:text-on-surface-variant/50 text-body-md" id="email" name="email" placeholder="ahmad@example.my" required="" type="email"/>
+</div>
+</div>
+<!-- Password -->
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="password">Password</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+</div>
+<input class="w-full pl-[44px] pr-[44px] py-sm bg-secondary-container/40 border-0 rounded-xl focus:ring-2 focus:ring-primary focus:bg-surface transition-all placeholder:text-on-surface-variant/50 text-body-md" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-md flex items-center text-on-surface-variant hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" data-icon="visibility" id="passwordIcon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Terms -->
+<div class="flex items-start gap-sm px-1">
+<div class="flex items-center h-5">
+<input class="h-4 w-4 rounded border-outline-variant text-primary focus:ring-primary" id="terms" name="terms" required="" type="checkbox"/>
+</div>
+<label class="font-label-sm text-label-sm text-on-surface-variant leading-tight" for="terms">
+                        I agree to the <a class="text-primary font-bold hover:underline" href="../privacy_notice_page/code.html">Terms of Service</a> and <a class="text-primary font-bold hover:underline" href="../privacy_notice_page/code.html">Privacy Policy</a>.
+                    </label>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm rounded-full shadow-lg shadow-primary/20 hover:bg-primary-container hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-xs" type="submit">
+                    Create Account
+                    <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Social Divider -->
+<div class="my-lg flex items-center gap-sm">
+<div class="flex-1 h-[1px] bg-outline-variant/40"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">or continue with</span>
+<div class="flex-1 h-[1px] bg-outline-variant/40"></div>
+</div>
+<!-- Social Login Grid -->
+<div class="grid grid-cols-2 gap-md">
+<button class="flex items-center justify-center gap-xs border border-outline-variant/50 py-xs rounded-xl hover:bg-surface-container-low transition-colors" onclick="window.location.href='../privacy_notice_page/code.html'" type="button">
+<img alt="Google Logo" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMC1jd8e6fX7MZv59nE6tSrAYZ9ZWjFAX6m1bdXQRX4aoh_3INRCeyClDZrjKcgMlpWUXrzQTtsYDtU1P8iQ5G3HZz3hyefAKZ1iBp5OjcBa6Q1jWOApRi7FMA0XYaYVfrI2kE7UOInUSQw53DKKVAXHxm8Q4yFB5eS781zm_hOoTOpaSxCDfYAzZqDW6by2-SQ7QiTVoKTU0t5QSsW01J9OEdTnf6dlbjiFckLXV089-2FLHtPoKD"/>
+<span class="font-label-sm text-label-sm">Google</span>
+</button>
+<button class="flex items-center justify-center gap-xs border border-outline-variant/50 py-xs rounded-xl hover:bg-surface-container-low transition-colors" onclick="window.location.href='../privacy_notice_page/code.html'" type="button">
+<span class="material-symbols-outlined text-on-surface" data-icon="apple">file_download</span>
+<span class="font-label-sm text-label-sm">Apple</span>
+</button>
+</div>
+</div>
+<!-- Bottom Link -->
+<p class="mt-lg text-center font-body-md text-on-surface-variant">
+            Already have an account? 
+            <a class="text-primary font-bold hover:underline" href="../login_page/code.html">Login here</a>
+</p>
+<!-- Footer / Support -->
+<footer class="mt-2xl text-center space-y-sm opacity-60">
+<div class="flex justify-center gap-lg">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary" href="../start_page_1/code.html#features">Help Center</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary" href="../action_recommendation_page/code.html">Contact Support</a>
+</div>
+<p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-widest">© 2024 SihatQ Malaysia</p>
+</footer>
+</main>
+<!-- Success Toast (Hidden by default) -->
+<div class="fixed bottom-lg left-1/2 -translate-x-1/2 glass-panel border border-primary/20 px-lg py-sm rounded-full shadow-2xl flex items-center gap-sm translate-y-[200%] transition-transform duration-500 ease-out z-50" id="successToast">
+<div class="bg-primary text-on-primary rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle" data-weight="fill">check_circle</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Account created successfully!</span>
+</div>
+<script>
+        function togglePassword() {
+            const pwdInput = document.getElementById('password');
+            const pwdIcon = document.getElementById('passwordIcon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                pwdIcon.textContent = 'visibility_off';
+            } else {
+                pwdInput.type = 'password';
+                pwdIcon.textContent = 'visibility';
+            }
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Interaction: Show success toast
+            const toast = document.getElementById('successToast');
+            toast.classList.remove('translate-y-[200%]');
+            toast.classList.add('translate-y-0');
+
+            setTimeout(() => {
+                window.location.href = '../privacy_notice_page/code.html';
+            }, 900);
+            
+            // In a real app, this would handle form data
+        });
+
+        // Simple floating animation for bg circles
+        window.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            document.querySelectorAll('.fixed > div').forEach((circle, index) => {
+                const factor = index === 0 ? 1 : -1.5;
+                circle.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+            });
+        });
+    </script>
+</body></html>

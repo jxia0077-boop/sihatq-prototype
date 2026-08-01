@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SihatQ - Profile Input</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-primary-fixed": "#00201d",
+                "error": "#ba1a1a",
+                "on-secondary-container": "#5b6760",
+                "surface-tint": "#006a61",
+                "outline-variant": "#bcc9c6",
+                "primary-container": "#008378",
+                "on-surface-variant": "#3d4947",
+                "surface-dim": "#cbdbf5",
+                "inverse-primary": "#6bd8cb",
+                "on-error-container": "#93000a",
+                "on-tertiary-container": "#fefcff",
+                "surface-container": "#e5eeff",
+                "on-error": "#ffffff",
+                "inverse-surface": "#213145",
+                "error-container": "#ffdad6",
+                "surface-bright": "#f8f9ff",
+                "outline": "#6d7a77",
+                "on-secondary-fixed-variant": "#3e4943",
+                "background": "#f8f9ff",
+                "on-tertiary": "#ffffff",
+                "inverse-on-surface": "#eaf1ff",
+                "secondary-fixed": "#d9e6dd",
+                "on-background": "#0b1c30",
+                "on-primary-fixed-variant": "#005049",
+                "primary-fixed": "#89f5e7",
+                "on-secondary-fixed": "#131e19",
+                "tertiary-fixed": "#dae2fd",
+                "tertiary-container": "#6c748b",
+                "tertiary-fixed-dim": "#bec6e0",
+                "surface-container-highest": "#d3e4fe",
+                "primary-fixed-dim": "#6bd8cb",
+                "surface-variant": "#d3e4fe",
+                "secondary-fixed-dim": "#bdcac1",
+                "primary": "#00685f",
+                "surface-container-low": "#eff4ff",
+                "surface-container-lowest": "#ffffff",
+                "tertiary": "#545c72",
+                "surface": "#f8f9ff",
+                "on-tertiary-fixed": "#131b2e",
+                "on-secondary": "#ffffff",
+                "on-surface": "#0b1c30",
+                "secondary": "#55615a",
+                "on-tertiary-fixed-variant": "#3f465c",
+                "surface-container-high": "#dce9ff",
+                "secondary-container": "#d9e6dd",
+                "on-primary-container": "#f4fffc",
+                "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "2xl": "1rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "xl": "32px",
+                "2xl": "48px",
+                "sm": "12px",
+                "gutter": "16px",
+                "md": "16px",
+                "lg": "24px",
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "base": "4px",
+                "xs": "8px"
+            },
+            "fontFamily": {
+                "headline-xl": ["Lexend"],
+                "label-md": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-md": ["Lexend"],
+                "body-lg": ["Inter"],
+                "headline-lg-mobile": ["Lexend"],
+                "label-sm": ["Inter"],
+                "headline-lg": ["Lexend"]
+            },
+            "fontSize": {
+                "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .progress-bar-glow {
+            box-shadow: 0 0 12px rgba(0, 106, 97, 0.3);
+        }
+
+        /* Micro-interactions */
+        .input-focus-ring:focus-within {
+            box-shadow: 0 0 0 2px #006a61;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopAppBar (Based on Shared Components) -->
+<header class="w-full sticky top-0 z-50 bg-surface shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-gutter py-xs max-w-7xl mx-auto">
+<a class="p-2 rounded-full hover:bg-secondary-container/50 transition-colors active:scale-95 duration-200" href="../dashboard_page/code.html" aria-label="Back to dashboard">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">SihatQ</h1>
+<a class="p-2 rounded-full hover:bg-secondary-container/50 transition-colors active:scale-95 duration-200" href="../login_page/code.html" aria-label="Log in">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</a>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow max-w-3xl mx-auto w-full px-margin-mobile md:px-lg py-xl">
+<!-- Header & Progress Section -->
+<section class="mb-xl">
+<div class="flex justify-between items-end mb-xs">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Step 1 of 2: About You</h2>
+<span class="text-label-md font-label-md text-primary">50% Complete</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-secondary-fixed rounded-full overflow-hidden">
+<div class="h-full w-1/2 bg-primary progress-bar-glow transition-all duration-700 ease-out"></div>
+</div>
+<p class="mt-md text-on-surface-variant text-body-md max-w-xl">Help us personalize your health assessment by providing some basic information. Your data is kept strictly confidential.</p>
+</section>
+<!-- Profile Input Form -->
+<div class="space-y-xl">
+<!-- Bento Layout for Top Fields -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Age Group Selection -->
+<div class="bg-surface-container-low p-lg rounded-2xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/50 transition-colors">
+<div class="flex items-start justify-between mb-md">
+<label class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Age Group</label>
+<span class="material-symbols-outlined text-primary opacity-60" data-icon="cake">cake</span>
+</div>
+<select class="w-full bg-secondary-container/30 border-0 rounded-xl p-md text-body-md focus:ring-2 focus:ring-primary transition-all appearance-none cursor-pointer">
+<option disabled="" selected="" value="">Select your age</option>
+<option>18-30</option>
+<option>31-45</option>
+<option>46-60</option>
+<option>60+</option>
+</select>
+</div>
+<!-- Gender Selection (Toggle Style) -->
+<div class="bg-surface-container-low p-lg rounded-2xl border border-outline-variant/30 flex flex-col justify-between hover:border-primary/50 transition-colors">
+<div class="flex items-start justify-between mb-md">
+<label class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Gender</label>
+<span class="material-symbols-outlined text-primary opacity-60" data-icon="wc">wc</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<label class="relative flex items-center justify-center p-md bg-secondary-container/30 rounded-xl cursor-pointer group transition-all">
+<input class="hidden peer" name="gender" type="radio" value="male"/>
+<span class="peer-checked:text-primary-container text-on-surface-variant font-label-md z-10">Male</span>
+<div class="absolute inset-0 bg-primary opacity-0 peer-checked:opacity-10 rounded-xl transition-opacity"></div>
+<div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-xl transition-all"></div>
+</label>
+<label class="relative flex items-center justify-center p-md bg-secondary-container/30 rounded-xl cursor-pointer group transition-all">
+<input class="hidden peer" name="gender" type="radio" value="female"/>
+<span class="peer-checked:text-primary-container text-on-surface-variant font-label-md z-10">Female</span>
+<div class="absolute inset-0 bg-primary opacity-0 peer-checked:opacity-10 rounded-xl transition-opacity"></div>
+<div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-xl transition-all"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Lifestyle Habits (Checkbox Cards) -->
+<section>
+<div class="flex items-center gap-xs mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="monitor_heart">monitor_heart</span>
+<h3 class="text-headline-md font-headline-md">Lifestyle Habits</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-md">
+<label class="flex flex-col items-center p-lg bg-surface rounded-2xl border border-outline-variant/30 cursor-pointer hover:bg-surface-container-high transition-all group relative">
+<input class="absolute top-4 right-4 h-5 w-5 text-primary border-outline rounded focus:ring-primary" type="checkbox"/>
+<span class="material-symbols-outlined text-[40px] text-primary mb-sm" data-icon="smoke_free">smoke_free</span>
+<span class="text-label-md text-center">Smoker</span>
+</label>
+<label class="flex flex-col items-center p-lg bg-surface rounded-2xl border border-outline-variant/30 cursor-pointer hover:bg-surface-container-high transition-all group relative">
+<input class="absolute top-4 right-4 h-5 w-5 text-primary border-outline rounded focus:ring-primary" type="checkbox"/>
+<span class="material-symbols-outlined text-[40px] text-primary mb-sm" data-icon="fitness_center">fitness_center</span>
+<span class="text-label-md text-center">Active Exercise</span>
+</label>
+<label class="flex flex-col items-center p-lg bg-surface rounded-2xl border border-outline-variant/30 cursor-pointer hover:bg-surface-container-high transition-all group relative">
+<input class="absolute top-4 right-4 h-5 w-5 text-primary border-outline rounded focus:ring-primary" type="checkbox"/>
+<span class="material-symbols-outlined text-[40px] text-primary mb-sm" data-icon="icecream">icecream</span>
+<span class="text-label-md text-center">High Sugar</span>
+</label>
+</div>
+</section>
+<!-- Family History (Multi-select Chips) -->
+<section>
+<div class="flex items-center gap-xs mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="family_history">family_history</span>
+<h3 class="text-headline-md font-headline-md">Family History</h3>
+</div>
+<div class="flex flex-wrap gap-sm">
+<button class="px-lg py-sm rounded-full border border-outline-variant text-body-md transition-all active:scale-95" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')" type="button">Diabetes</button>
+<button class="px-lg py-sm rounded-full border border-outline-variant text-body-md transition-all active:scale-95" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')" type="button">Heart Disease</button>
+<button class="px-lg py-sm rounded-full border border-outline-variant text-body-md transition-all active:scale-95" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')" type="button">Hypertension</button>
+<button class="px-lg py-sm rounded-full border border-outline-variant text-body-md transition-all active:scale-95" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')" type="button">None</button>
+</div>
+</section>
+<!-- Location (Dropdown) -->
+<section class="bg-surface-container p-lg rounded-2xl">
+<div class="flex items-center gap-xs mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
+<h3 class="text-headline-md font-headline-md">Location</h3>
+</div>
+<div class="relative">
+<select class="w-full bg-white border-0 rounded-xl p-md text-body-md shadow-sm focus:ring-2 focus:ring-primary appearance-none cursor-pointer">
+<option disabled="" selected="" value="">Select State</option>
+<option>Selangor</option>
+<option>Kuala Lumpur</option>
+<option>Johor</option>
+<option>Penang</option>
+<option>Sabah</option>
+<option>Sarawak</option>
+<option>Perak</option>
+<option>Melaka</option>
+</select>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</section>
+</div>
+<!-- Spacer for FAB/Fixed Footer -->
+<div class="h-2xl"></div>
+</main>
+<!-- Footer Action -->
+<footer class="sticky bottom-0 w-full bg-surface-container-lowest shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)] p-gutter z-50">
+<div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-md">
+<div class="hidden sm:flex flex-col flex-grow">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Ready for Analysis?</span>
+<span class="text-body-md text-on-surface">Your health journey begins here.</span>
+</div>
+<a class="w-full sm:w-auto px-2xl py-md bg-primary text-on-primary font-label-md rounded-full shadow-lg hover:shadow-xl hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-xs" href="../analyzing_profile_page/code.html">
+                Next: See My Results
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</footer>
+<!-- Bottom Navigation (Shared Component Logic - Suppressed on transactional pages per instructions, but kept here as a guide for layout if needed) -->
+<!-- SUPPRESSED because this is a Task-Focused linear journey (Assessment) -->
+<script>
+        // Simple logic for single-select buttons or interactions
+        document.querySelectorAll('button[onclick*="toggle"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Potential logic for exclusive "None" selection
+                if (btn.innerText === "None") {
+                    btn.parentElement.querySelectorAll('button').forEach(b => {
+                        if (b !== btn) {
+                            b.classList.remove('bg-primary', 'text-white', 'border-primary');
+                        }
+                    });
+                } else {
+                    const noneBtn = Array.from(btn.parentElement.querySelectorAll('button')).find(b => b.innerText === "None");
+                    if (noneBtn) noneBtn.classList.remove('bg-primary', 'text-white', 'border-primary');
+                }
+            });
+        });
+    </script>
+</body></html>

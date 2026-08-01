@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SihatQ - Your Health Insight</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#00201d",
+                    "error": "#ba1a1a",
+                    "on-secondary-container": "#5b6760",
+                    "surface-tint": "#006a61",
+                    "outline-variant": "#bcc9c6",
+                    "primary-container": "#008378",
+                    "on-surface-variant": "#3d4947",
+                    "surface-dim": "#cbdbf5",
+                    "inverse-primary": "#6bd8cb",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#fefcff",
+                    "surface-container": "#e5eeff",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f8f9ff",
+                    "outline": "#6d7a77",
+                    "on-secondary-fixed-variant": "#3e4943",
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed": "#d9e6dd",
+                    "on-background": "#0b1c30",
+                    "on-primary-fixed-variant": "#005049",
+                    "primary-fixed": "#89f5e7",
+                    "on-secondary-fixed": "#131e19",
+                    "tertiary-fixed": "#dae2fd",
+                    "tertiary-container": "#6c748b",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "surface-variant": "#d3e4fe",
+                    "secondary-fixed-dim": "#bdcac1",
+                    "primary": "#00685f",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#545c72",
+                    "surface": "#f8f9ff",
+                    "on-tertiary-fixed": "#131b2e",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "secondary": "#55615a",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-container": "#d9e6dd",
+                    "on-primary-container": "#f4fffc",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "2xl": "48px",
+                    "sm": "12px",
+                    "gutter": "16px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "base": "4px",
+                    "xs": "8px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Lexend"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Lexend"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Lexend"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .risk-glow {
+            filter: drop-shadow(0 0 8px rgba(0, 104, 95, 0.2));
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .progress-mask {
+            mask-image: linear-gradient(to right, black var(--progress), transparent var(--progress));
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-container-low shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-gutter py-xs max-w-7xl mx-auto">
+<div class="flex items-center gap-md">
+<a class="material-symbols-outlined text-primary hover:bg-secondary-container/50 transition-colors p-2 rounded-full active:scale-95" href="../profile_input_page/code.html" aria-label="Back to profile input">arrow_back</a>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">SihatQ</h1>
+</div>
+<div class="flex items-center gap-sm">
+<a class="material-symbols-outlined text-primary hover:bg-secondary-container/50 transition-colors p-2 rounded-full active:scale-95" href="../login_page/code.html" aria-label="Log in">account_circle</a>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-gutter py-lg pb-32">
+<!-- Header Section -->
+<section class="mb-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Your Health Insight</h2>
+<p class="text-on-surface-variant font-body-md">Deep dive into your personalized health profile based on recent screenings.</p>
+</section>
+<!-- Bento Layout -->
+<div class="bento-grid">
+<!-- Main Risk Card -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-lowest rounded-2xl p-lg border-t-4 border-[#ff9800] shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-md">
+<span class="bg-[#fff3e0] text-[#e65100] px-3 py-1 rounded-full font-label-sm text-label-sm">Moderate Risk</span>
+<span class="material-symbols-outlined text-[#ff9800] text-[32px]">favorite</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Cardiovascular Health</h3>
+<p class="text-on-surface-variant font-body-md leading-relaxed">
+                        Based on your age and low activity levels, you may be at higher risk for heart-related issues. Increasing moderate exercise can significantly lower this trajectory.
+                    </p>
+</div>
+<div class="mt-lg pt-md border-t border-outline-variant/30">
+<a class="w-full bg-primary text-on-primary font-label-md py-3 rounded-full hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-xs" href="../action_recommendation_page/code.html">
+                        How to reduce my risk?
+                        <span class="material-symbols-outlined text-[18px]">trending_down</span>
+</a>
+</div>
+</div>
+<!-- Comparison Chart Card -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-lowest rounded-2xl p-lg shadow-sm">
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-lg uppercase tracking-wider">Risk Score Comparison</h4>
+<div class="space-y-xl">
+<!-- User Score -->
+<div class="space-y-xs">
+<div class="flex justify-between font-label-md">
+<span>Your Risk Score</span>
+<span class="text-primary font-bold">65%</span>
+</div>
+<div class="h-6 bg-secondary-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000 ease-out" style="width: 65%;"></div>
+</div>
+</div>
+<!-- Benchmark -->
+<div class="space-y-xs">
+<div class="flex justify-between font-label-md text-on-surface-variant">
+<span>Malaysian Average (Your Age Group)</span>
+<span class="font-bold">52%</span>
+</div>
+<div class="h-6 bg-outline-variant/30 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim rounded-full transition-all duration-1000 ease-out" style="width: 52%;"></div>
+</div>
+</div>
+</div>
+<p class="mt-xl text-[10px] text-on-surface-variant italic opacity-70">
+                    Data based on NHMS 2019 Malaysia. Benchmark calculated for the 30-45 age demographic.
+                </p>
+</div>
+<!-- Contextual Insight Image -->
+<div class="col-span-1 md:col-span-3 h-64 rounded-2xl overflow-hidden relative group">
+<div class="absolute inset-0 bg-gradient-to-t from-on-primary-fixed/80 to-transparent z-10"></div>
+<div class="absolute bottom-0 left-0 p-lg z-20">
+<h5 class="text-on-primary font-headline-md mb-xs">Active Lifestyle, Healthier Heart</h5>
+<p class="text-on-primary/80 text-label-md">Join over 2,000 Malaysians in our '30-Day Step Challenge'.</p>
+</div>
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-700" data-alt="A professional lifestyle photograph of a diverse group of Malaysian adults walking briskly in a lush, green urban park in Kuala Lumpur during a soft sunrise. The lighting is warm and inspiring, featuring long shadows and a clean, high-end medical wellness aesthetic. The composition is dynamic and focuses on health, movement, and community in a modern, inclusive setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC9p3SZsh9-3ixTrcA7C4yk46LIx-Oi0HnHRzHxwW9P7xTTsOwyhneeWX20BMqQE6t1rgnP5GP_mS0sKDBDQeJBw7yPi5O2XhiJf0IsUxmgZ-FctcpooJ57PCl0tLsNhUna_Rt8Qe3Fo5HsJXe-uxhDJ2WbabC0dN3WOWC6VzJPzSmiL95svotqc2-cKIWiO_6rWxQhI-ynN4WGibS_VWImHJZfZ7x4wqtZBEiCzt8tRrH-pEBhn82o')"></div>
+</div>
+<!-- Small Action Chip -->
+<div class="col-span-1 bg-primary-container rounded-2xl p-lg flex flex-col justify-center items-center text-center gap-sm cursor-pointer" onclick="window.location.href='../result_detail_page/code.html'" role="link" tabindex="0">
+<span class="material-symbols-outlined text-on-primary-container text-[40px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-md text-on-primary-container">View Full Data Export</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest dark:bg-surface-container shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)] rounded-t-xl">
+<div class="flex justify-around items-center px-4 py-2 pb-safe max-w-lg mx-auto">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150" href="../dashboard_page/code.html">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150" href="../profile_input_page/code.html">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-label-sm text-label-sm">Assess</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed-variant rounded-full px-4 py-1 active:scale-90 transition-transform duration-150" href="code.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150" href="../action_recommendation_page/code.html">
+<span class="material-symbols-outlined">checklist</span>
+<span class="font-label-sm text-label-sm">Actions</span>
+</a>
+</div>
+</nav>
+<script>
+        // Micro-interaction: Chart animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.h-full');
+            bars.forEach(bar => {
+                const targetWidth = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 300);
+            });
+        });
+    </script>
+</body></html>

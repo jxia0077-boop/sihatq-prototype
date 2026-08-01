@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SihatQ - My Assessments</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-tertiary-container": "#fefcff",
+                    "on-secondary-container": "#5b6760",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-fixed-variant": "#3e4943",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-primary-container": "#f4fffc",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-fixed-variant": "#005049",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "on-primary-fixed": "#00201d",
+                    "inverse-primary": "#6bd8cb",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#131b2e",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#131e19",
+                    "secondary-container": "#d9e6dd",
+                    "outline-variant": "#bcc9c6",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "outline": "#6d7a77",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed": "#89f5e7",
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#545c72",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "on-background": "#0b1c30",
+                    "secondary": "#55615a",
+                    "tertiary-fixed": "#dae2fd",
+                    "tertiary-container": "#6c748b",
+                    "secondary-fixed-dim": "#bdcac1",
+                    "on-surface-variant": "#3d4947",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed": "#d9e6dd",
+                    "surface-bright": "#f8f9ff",
+                    "primary": "#00685f",
+                    "surface-container": "#e5eeff",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#006a61",
+                    "primary-container": "#008378"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "sm": "12px",
+                    "2xl": "48px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "md": "16px",
+                    "xs": "8px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Lexend"],
+                    "headline-xl": ["Lexend"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "headline-md": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 104, 95, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-container-low shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-gutter py-xs max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<a class="hover:bg-secondary-container/50 transition-colors p-2 rounded-full active:scale-95 duration-200" href="../start_page_1/code.html" aria-label="Back to home">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">SihatQ</h1>
+</div>
+<a class="hover:bg-secondary-container/50 transition-colors p-2 rounded-full active:scale-95 duration-200" href="../login_page/code.html" aria-label="Log in">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</a>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop pt-xl">
+<!-- Header Section -->
+<section class="mb-xl">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">My Health Status</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Track your wellness journey and complete regular assessments.</p>
+</section>
+<!-- Main Bento Dashboard -->
+<div class="bento-grid">
+<!-- Health Score Card (Large) -->
+<div class="col-span-1 md:col-span-2 glass-card rounded-2xl p-lg flex flex-col justify-between relative overflow-hidden group">
+
+<div class="relative z-10">
+<span class="font-label-md text-label-md text-primary uppercase tracking-wider">Overall Health Score</span>
+<div class="flex items-baseline mt-4">
+<span class="font-headline-xl text-headline-xl text-primary">65</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant ml-2">/100</span>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-error" data-icon="trending_down">trending_down</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2% lower than last month</span>
+</div>
+</div>
+<div class="mt-xl relative z-10">
+<div class="w-full bg-secondary-container h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[65%] transition-all duration-1000 ease-out"></div>
+</div>
+<p class="mt-sm font-body-md text-body-md text-on-surface-variant italic">"Your activity levels are great, but focus on consistent sleep patterns."</p>
+</div>
+</div>
+<!-- Start New Assessment CTA -->
+<div class="col-span-1 md:col-span-2 bg-primary-container text-on-primary-container rounded-2xl p-lg flex flex-col justify-between shadow-lg shadow-primary/10 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+<div>
+<div class="flex justify-between items-start">
+<div class="p-3 bg-on-primary-container/10 rounded-xl">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<span class="bg-white/20 px-3 py-1 rounded-full font-label-sm text-label-sm">Due in 3 days</span>
+</div>
+<h3 class="font-headline-md text-headline-md mt-lg">Monthly Wellness Checkup</h3>
+<p class="font-body-md text-body-md mt-sm opacity-90">Keep your health profile updated to receive personalized clinical insights.</p>
+</div>
+<a class="mt-xl w-full bg-surface-container-lowest text-primary py-4 rounded-full font-label-md text-label-md flex items-center justify-center gap-2 active:scale-95 transition-transform" href="../profile_input_page/code.html">
+                    Start New Assessment
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Mini Metrics Grid -->
+<div class="col-span-1 glass-card rounded-2xl p-md border-t-4 border-primary">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cardio Health</span>
+<div class="flex items-center gap-3 mt-xs">
+<span class="material-symbols-outlined text-primary" data-icon="favorite">favorite</span>
+<span class="font-headline-md text-headline-md">Good</span>
+</div>
+</div>
+<div class="col-span-1 glass-card rounded-2xl p-md border-t-4 border-[#ffab91]">
+<span class="font-label-sm text-label-sm text-on-surface-variant">BMI Status</span>
+<div class="flex items-center gap-3 mt-xs">
+<span class="material-symbols-outlined text-[#d84315]" data-icon="monitor_weight">monitor_weight</span>
+<span class="font-headline-md text-headline-md">24.1</span>
+</div>
+</div>
+<div class="col-span-1 glass-card rounded-2xl p-md border-t-4 border-primary">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Mental Wellbeing</span>
+<div class="flex items-center gap-3 mt-xs">
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+<span class="font-headline-md text-headline-md">Stable</span>
+</div>
+</div>
+<div class="col-span-1 glass-card rounded-2xl p-md border-t-4 border-[#81c784]">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Activity Level</span>
+<div class="flex items-center gap-3 mt-xs">
+<span class="material-symbols-outlined text-primary" data-icon="directions_run">directions_run</span>
+<span class="font-headline-md text-headline-md">High</span>
+</div>
+</div>
+</div>
+<!-- History Section -->
+<section class="mt-2xl">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Assessment History</h3>
+<a class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" href="../result_detail_page/code.html">
+                    View All <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<div class="space-y-md">
+<!-- History Item 1 -->
+<div class="glass-card rounded-2xl p-md flex items-center justify-between hover:bg-surface-container/30 transition-colors cursor-pointer" onclick="window.location.href='../result_detail_page/code.html'" role="link" tabindex="0">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="event_note">event_note</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Full Wellness Audit</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Completed Oct 12, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-primary">65</span>
+<span class="font-label-sm text-label-sm px-2 py-1 bg-[#81c784]/20 text-[#2e7d32] rounded-full">Fair</span>
+</div>
+</div>
+</div>
+<!-- History Item 2 -->
+<div class="glass-card rounded-2xl p-md flex items-center justify-between hover:bg-surface-container/30 transition-colors cursor-pointer" onclick="window.location.href='../result_detail_page/code.html'" role="link" tabindex="0">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="event_note">event_note</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Full Wellness Audit</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Completed Sep 10, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-primary">67</span>
+<span class="font-label-sm text-label-sm px-2 py-1 bg-[#81c784]/20 text-[#2e7d32] rounded-full">Good</span>
+</div>
+</div>
+</div>
+<!-- History Item 3 -->
+<div class="glass-card rounded-2xl p-md flex items-center justify-between hover:bg-surface-container/30 transition-colors cursor-pointer" onclick="window.location.href='../result_detail_page/code.html'" role="link" tabindex="0">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="event_note">event_note</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Quick Baseline Check</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Completed Aug 25, 2023</p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-primary">62</span>
+<span class="font-label-sm text-label-sm px-2 py-1 bg-error-container/50 text-error rounded-full">Fair</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Informational Card -->
+<div class="mt-2xl mb-xl relative rounded-3xl overflow-hidden h-64 flex items-end">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A peaceful doctor's office in Malaysia with sunlight streaming through large windows, featuring lush green tropical plants in the corner. The interior is modern and minimalist with warm wood textures and a professional, clinical yet comforting atmosphere. Soft teal accents reflect a trusted healthcare brand aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC4nLhnUArk2isGw-QiVPVvzJOmguoM9DQa4n9F6eiqIK7IctPgPNFU3cxZa1GZGUw3zTjTY5Z30XAL4tPPPLXBGjP2fqWsm_Dirk6tQmGbnUxu-5J10XNBJKJw_Fwn1HKZtxFy42B789YTWc_EpkUtgDqE30JJ5DRlYQBbDI79qmCz1aMC5LJt7MwnPMC1U8Upn4b25f8g5Abf5aUzpSdIwPCwxuSBxdO2f5Iieo2yjucAUvlqvQ2t')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+<div class="relative z-10 p-lg text-white">
+<h4 class="font-headline-md text-headline-md">Your health data is 100% encrypted</h4>
+<p class="font-body-md text-body-md mt-2 opacity-90">We follow strict clinical guidelines to keep your records safe.</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface-container-lowest dark:bg-surface-container shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)] z-50 rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity" href="code.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed-variant rounded-full px-4 py-1 active:scale-90 transition-transform duration-150" href="../profile_input_page/code.html">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-sm text-label-sm">Assess</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity" href="../risk_insight_page/code.html">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity" href="../action_recommendation_page/code.html">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-label-sm text-label-sm">Actions</span>
+</a>
+</nav>
+<!-- Desktop Sidebar/Nav Placeholder -->
+<nav class="hidden md:flex fixed left-0 top-16 h-full w-24 flex-col items-center py-xl gap-lg bg-surface border-r border-outline-variant/30">
+<a class="p-3 rounded-2xl hover:bg-primary-container/10 group transition-colors" href="code.html">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="home">home</span>
+</a>
+<a class="p-3 rounded-2xl bg-primary-container text-white" href="../profile_input_page/code.html">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+</a>
+<a class="p-3 rounded-2xl hover:bg-primary-container/10 group transition-colors" href="../risk_insight_page/code.html">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="analytics">analytics</span>
+</a>
+<a class="p-3 rounded-2xl hover:bg-primary-container/10 group transition-colors" href="../action_recommendation_page/code.html">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="checklist">checklist</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for score animation and hover effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.querySelector('.bg-primary.h-full');
+            if (progressBar) {
+                setTimeout(() => {
+                    progressBar.style.width = '65%';
+                }, 300);
+            }
+        });
+    </script>
+</body></html>

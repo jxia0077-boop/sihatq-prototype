@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SihatQ - Assessment Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lexend:wght@600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-container": "#fefcff",
+                        "on-secondary-container": "#5b6760",
+                        "surface-variant": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#3e4943",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary-container": "#f4fffc",
+                        "surface-container-low": "#eff4ff",
+                        "on-primary-fixed-variant": "#005049",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "on-primary-fixed": "#00201d",
+                        "inverse-primary": "#6bd8cb",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#131b2e",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#131e19",
+                        "secondary-container": "#d9e6dd",
+                        "outline-variant": "#bcc9c6",
+                        "surface": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "inverse-surface": "#213145",
+                        "outline": "#6d7a77",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary-fixed": "#89f5e7",
+                        "background": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#545c72",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "on-background": "#0b1c30",
+                        "secondary": "#55615a",
+                        "tertiary-fixed": "#dae2fd",
+                        "tertiary-container": "#6c748b",
+                        "secondary-fixed-dim": "#bdcac1",
+                        "on-surface-variant": "#3d4947",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed": "#d9e6dd",
+                        "surface-bright": "#f8f9ff",
+                        "primary": "#00685f",
+                        "surface-container": "#e5eeff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#006a61",
+                        "primary-container": "#008378"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "sm": "12px",
+                        "2xl": "48px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "gutter": "16px",
+                        "base": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Lexend"],
+                        "headline-xl": ["Lexend"],
+                        "headline-lg-mobile": ["Lexend"],
+                        "headline-md": ["Lexend"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 10px;
+        }
+        .soft-elevation {
+            box-shadow: 0 20px 40px rgba(0, 106, 97, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md custom-scrollbar">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-container-low shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-gutter py-xs max-w-7xl mx-auto">
+<div class="flex items-center gap-md">
+<a class="hover:bg-secondary-container/50 p-2 rounded-full transition-colors active:scale-95 duration-200" href="../dashboard_page/code.html" aria-label="Back to dashboard">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">SihatQ</h1>
+</div>
+<div class="flex items-center gap-md">
+<a class="hover:bg-secondary-container/50 p-2 rounded-full transition-colors active:scale-95 duration-200" href="../login_page/code.html" aria-label="Log in">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</a>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile md:px-lg py-xl pb-32">
+<!-- Header Section -->
+<section class="mb-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider mb-base block">Assessment Report</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">July 14, 2023</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Comprehensive Wellness Screening #SQ-9821</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-full font-label-md text-label-md shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 transition-all w-fit">
+                    Download PDF
+                </button>
+</div>
+</section>
+<!-- Summary Overview Card (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<!-- Overall Score Gauge -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-2xl p-lg border border-outline-variant/30 soft-elevation relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="flex flex-col md:flex-row items-center gap-xl">
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-secondary-container" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary transition-all duration-1000 ease-out" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-dasharray="502.6" stroke-dashoffset="100.5" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-xl text-headline-xl text-on-surface">80</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Optimal</span>
+</div>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Wellness Score</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Your health score has improved by <span class="text-primary font-bold">+4%</span> since your last assessment in April. You are performing better than 82% of your demographic.</p>
+<div class="flex gap-sm">
+<span class="bg-primary-container text-on-primary-container px-md py-xs rounded-full font-label-sm text-label-sm">Low Risk</span>
+<span class="bg-secondary-container text-on-secondary-container px-md py-xs rounded-full font-label-sm text-label-sm">Improving</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Comparison Card -->
+<div class="bg-primary-container/30 rounded-2xl p-lg border border-primary-fixed-dim/20 soft-elevation flex flex-col justify-between">
+<div>
+<h4 class="font-label-md text-label-md text-on-primary-fixed-variant mb-md">Comparison Trend</h4>
+<div class="space-y-md">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-primary-fixed-variant">Previous (Apr)</span>
+<span class="font-label-md text-label-md text-on-primary-fixed-variant">76/100</span>
+</div>
+<div class="w-full bg-on-primary-fixed/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-on-primary-fixed-variant h-full w-[76%] rounded-full"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-primary-fixed-variant">Current (Jul)</span>
+<span class="font-label-md text-label-md text-on-primary-fixed-variant">80/100</span>
+</div>
+<div class="w-full bg-on-primary-fixed/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[80%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="pt-lg">
+<p class="font-label-sm text-label-sm text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="trending_up">trending_up</span>
+                        Steady improvement
+                    </p>
+</div>
+</div>
+</div>
+<!-- Metric Drill-down Cards -->
+<h3 class="font-headline-md text-headline-md text-on-surface mb-lg">Metric Breakdown</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Cardiovascular -->
+<div class="bg-surface-container-lowest rounded-2xl p-lg border border-outline-variant/30 soft-elevation hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-start mb-lg">
+<div class="bg-tertiary-container/10 p-sm rounded-xl">
+<span class="material-symbols-outlined text-tertiary text-[28px]" data-icon="favorite">favorite</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">88%</span>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-xs">Cardiovascular</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Resting heart rate and BP within optimal clinical ranges.</p>
+<div class="space-y-sm">
+<div class="flex justify-between text-label-sm">
+<span class="text-on-surface-variant">Blood Pressure</span>
+<span class="text-on-surface">118/75 mmHg</span>
+</div>
+<div class="w-full bg-surface-container h-1 rounded-full">
+<div class="bg-primary h-full w-[90%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Metabolic -->
+<div class="bg-surface-container-lowest rounded-2xl p-lg border border-outline-variant/30 soft-elevation hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-start mb-lg">
+<div class="bg-primary-container/10 p-sm rounded-xl">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="water_drop">water_drop</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">72%</span>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-xs">Metabolic</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Glucose levels slightly elevated but within manageable threshold.</p>
+<div class="space-y-sm">
+<div class="flex justify-between text-label-sm">
+<span class="text-on-surface-variant">HbA1c Level</span>
+<span class="text-on-surface">5.4%</span>
+</div>
+<div class="w-full bg-surface-container h-1 rounded-full">
+<div class="bg-tertiary h-full w-[72%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Lifestyle -->
+<div class="bg-surface-container-lowest rounded-2xl p-lg border border-outline-variant/30 soft-elevation hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-start mb-lg">
+<div class="bg-secondary-container/20 p-sm rounded-xl">
+<span class="material-symbols-outlined text-secondary text-[28px]" data-icon="directions_run">directions_run</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">81%</span>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-xs">Lifestyle</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Activity levels increased. Sleep consistency remains high.</p>
+<div class="space-y-sm">
+<div class="flex justify-between text-label-sm">
+<span class="text-on-surface-variant">Sleep Duration</span>
+<span class="text-on-surface">7.5 hrs/avg</span>
+</div>
+<div class="w-full bg-surface-container h-1 rounded-full">
+<div class="bg-primary h-full w-[81%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Mental Wellness -->
+<div class="bg-surface-container-lowest rounded-2xl p-lg border border-outline-variant/30 soft-elevation hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-start mb-lg">
+<div class="bg-primary-container/10 p-sm rounded-xl">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="psychology">psychology</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">79%</span>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-xs">Mental Wellness</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Stress management indicators show positive resilience scores.</p>
+<div class="space-y-sm">
+<div class="flex justify-between text-label-sm">
+<span class="text-on-surface-variant">Stress Level</span>
+<span class="text-on-surface">Mild</span>
+</div>
+<div class="w-full bg-surface-container h-1 rounded-full">
+<div class="bg-primary h-full w-[79%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- History Chart Placeholder Section -->
+<div class="mt-2xl">
+<div class="bg-surface-container rounded-2xl p-lg border border-outline-variant/20">
+<div class="flex justify-between items-center mb-xl">
+<h3 class="font-headline-md text-headline-md text-on-surface">Score Progression</h3>
+<div class="flex gap-sm">
+<button class="bg-surface-container-lowest px-md py-xs rounded-lg text-label-sm text-on-surface-variant border border-outline-variant/30">6 Months</button>
+<button class="bg-primary text-on-primary px-md py-xs rounded-lg text-label-sm border border-primary">Yearly</button>
+</div>
+</div>
+<!-- Visual Chart Simulation -->
+<div class="h-48 w-full flex items-end justify-between gap-base md:gap-lg px-xs md:px-lg">
+<div class="flex flex-col items-center gap-xs flex-1">
+<div class="w-full bg-primary/20 rounded-t-lg h-[40%] transition-all hover:bg-primary/40"></div>
+<span class="text-[10px] text-on-surface-variant font-medium">Jan</span>
+</div>
+<div class="flex flex-col items-center gap-xs flex-1">
+<div class="w-full bg-primary/20 rounded-t-lg h-[45%] transition-all hover:bg-primary/40"></div>
+<span class="text-[10px] text-on-surface-variant font-medium">Feb</span>
+</div>
+<div class="flex flex-col items-center gap-xs flex-1">
+<div class="w-full bg-primary/20 rounded-t-lg h-[55%] transition-all hover:bg-primary/40"></div>
+<span class="text-[10px] text-on-surface-variant font-medium">Mar</span>
+</div>
+<div class="flex flex-col items-center gap-xs flex-1">
+<div class="w-full bg-primary/40 rounded-t-lg h-[76%] transition-all hover:bg-primary/60"></div>
+<span class="text-[10px] text-on-surface-variant font-medium">Apr</span>
+</div>
+<div class="flex flex-col items-center gap-xs flex-1">
+<div class="w-full bg-primary/20 rounded-t-lg h-[65%] transition-all hover:bg-primary/40"></div>
+<span class="text-[10px] text-on-surface-variant font-medium">May</span>
+</div>
+<div class="flex flex-col items-center gap-xs flex-1">
+<div class="w-full bg-primary/20 rounded-t-lg h-[70%] transition-all hover:bg-primary/40"></div>
+<span class="text-[10px] text-on-surface-variant font-medium">Jun</span>
+</div>
+<div class="flex flex-col items-center gap-xs flex-1">
+<div class="w-full bg-primary rounded-t-lg h-[80%] shadow-lg shadow-primary/20"></div>
+<span class="text-[10px] text-primary font-bold">Jul</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recommendation Action Card -->
+<div class="mt-2xl bg-on-surface p-lg rounded-2xl flex flex-col md:flex-row items-center gap-lg">
+<div class="h-24 w-24 flex-shrink-0 bg-primary/20 rounded-full flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional Malaysian healthcare consultant smiling warmly against a soft-focus clinical background with warm teal lighting, symbolizing trust and expert guidance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8jx_ptwggclr-S26cU7u3R3eoFcqIZv089-b64MYlRKShKevVBt4g2T0s6AzdhPvOePHzD51hP9qabWmxEoF2u7wZ7RtR16hs3k7Z2E7OGrx3GomqY0xy8q6EtpKX6eVHxsbt_dylj8YmjXpX-S_CEErV3hC3ilnY00iig7V8YYwV73iNrSpSU9e9dKOnDc3nKQ59fMm_CNFurKcsVrqPJAO0n3ObzfLA5WM7mFONPC5uSkBfcRu2"/>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h4 class="font-headline-md text-headline-md text-surface-container-lowest mb-xs">Next Steps</h4>
+<p class="font-body-md text-body-md text-surface-variant/80">Your results suggest focusing on metabolic health. Schedule a 15-min chat with our health advisor to personalize your plan.</p>
+</div>
+<a class="bg-primary-fixed text-on-primary-fixed px-lg py-sm rounded-full font-label-md text-label-md active:scale-95 transition-transform w-full md:w-auto text-center" href="../reminder_setup_page/code.html">
+                Book Consultation
+            </a>
+</div>
+<!-- Back to History -->
+<div class="mt-2xl flex justify-center">
+<a class="flex items-center gap-sm text-primary font-label-md text-label-md hover:underline decoration-2 underline-offset-4" href="../dashboard_page/code.html">
+<span class="material-symbols-outlined" data-icon="keyboard_backspace">keyboard_backspace</span>
+                Back to Assessment History
+            </a>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface-container-lowest dark:bg-surface-container shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)] z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity" href="../dashboard_page/code.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed-variant rounded-full px-4 py-1" href="../profile_input_page/code.html">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-sm text-label-sm">Assess</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity" href="../risk_insight_page/code.html">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity" href="../action_recommendation_page/code.html">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-label-sm text-label-sm">Actions</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction: Update progress bar on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const circles = document.querySelectorAll('circle.transition-all');
+            circles.forEach(circle => {
+                // Triggering reflow for animation
+                circle.style.strokeDashoffset = '100.5'; 
+            });
+        });
+
+        // Simple active state toggle for nav
+        const navItems = document.querySelectorAll('nav a');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                navItems.forEach(i => {
+                    i.classList.remove('bg-primary-container', 'dark:bg-primary-fixed', 'text-on-primary-container', 'dark:text-on-primary-fixed-variant', 'rounded-full', 'px-4', 'py-1');
+                    i.classList.add('text-on-surface-variant', 'opacity-70');
+                });
+                item.classList.add('bg-primary-container', 'dark:bg-primary-fixed', 'text-on-primary-container', 'dark:text-on-primary-fixed-variant', 'rounded-full', 'px-4', 'py-1');
+                item.classList.remove('text-on-surface-variant', 'opacity-70');
+            });
+        });
+    </script>
+</body></html>

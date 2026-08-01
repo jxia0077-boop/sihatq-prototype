@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SihatQ - Reminder Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-tertiary-container": "#fefcff",
+                    "on-secondary-container": "#5b6760",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-fixed-variant": "#3e4943",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-primary-container": "#f4fffc",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-fixed-variant": "#005049",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "on-primary-fixed": "#00201d",
+                    "inverse-primary": "#6bd8cb",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#131b2e",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#131e19",
+                    "secondary-container": "#d9e6dd",
+                    "outline-variant": "#bcc9c6",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "outline": "#6d7a77",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed": "#89f5e7",
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#545c72",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "on-background": "#0b1c30",
+                    "secondary": "#55615a",
+                    "tertiary-fixed": "#dae2fd",
+                    "tertiary-container": "#6c748b",
+                    "secondary-fixed-dim": "#bdcac1",
+                    "on-surface-variant": "#3d4947",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed": "#d9e6dd",
+                    "surface-bright": "#f8f9ff",
+                    "primary": "#00685f",
+                    "surface-container": "#e5eeff",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#006a61",
+                    "primary-container": "#008378"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "sm": "12px",
+                    "2xl": "48px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px",
+                    "md": "16px",
+                    "xs": "8px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Lexend"],
+                    "headline-xl": ["Lexend"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "headline-md": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        .toggle-checkbox:checked + .toggle-slot {
+            background-color: #00685f;
+        }
+        .toggle-checkbox:checked + .toggle-slot .toggle-dot {
+            transform: translateX(20px);
+            background-color: white;
+        }
+
+        .custom-time-picker::-webkit-calendar-picker-indicator {
+            filter: invert(27%) sepia(91%) saturate(545%) hue-rotate(128deg) brightness(92%) contrast(105%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-container-low shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-gutter py-xs max-w-7xl mx-auto">
+<div class="flex items-center gap-md">
+<a class="p-2 rounded-full hover:bg-secondary-container/50 transition-colors active:scale-95 duration-200" href="../action_recommendation_page/code.html" aria-label="Back to action plan">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">SihatQ</h1>
+</div>
+<div class="flex items-center gap-sm">
+<a class="p-2 rounded-full hover:bg-secondary-container/50 transition-colors active:scale-95" href="../login_page/code.html" aria-label="Log in">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</a>
+</div>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-margin-mobile md:px-0 py-xl space-y-xl">
+<!-- Header Section -->
+<section class="space-y-sm text-center md:text-left">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Action Reminders</h2>
+<p class="text-on-surface-variant text-body-md">Small steps lead to big changes. Set up your nudges to stay on track with your health goals.</p>
+</section>
+<!-- Reminder Bento Grid -->
+<div class="grid grid-cols-1 gap-md">
+<!-- Daily Steps Reminder -->
+<article class="bg-surface-container-lowest rounded-2xl p-lg border border-secondary-container shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed text-2xl" data-icon="directions_walk">directions_walk</span>
+</div>
+<div>
+<h3 class="font-headline-md text-on-surface text-lg">Daily Steps</h3>
+<p class="text-label-md text-on-surface-variant">Stay active throughout the day</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox peer" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-secondary-container rounded-full transition-colors">
+<div class="toggle-dot absolute left-1 top-1 bg-on-secondary-container w-4 h-4 rounded-full transition-transform"></div>
+</div>
+</label>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div class="space-y-xs">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Reminder Time</span>
+<div class="flex items-center gap-sm">
+<input class="custom-time-picker bg-surface-container border-none rounded-lg px-md py-sm font-label-md text-primary focus:ring-2 focus:ring-primary" type="time" value="09:00"/>
+<span class="text-on-surface-variant font-label-md">Every Day</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-3 py-1 rounded-full bg-primary-container/20 text-on-primary-fixed-variant text-label-sm border border-primary-container/30">10k Steps Goal</span>
+</div>
+</div>
+</article>
+<!-- Water Intake Reminder -->
+<article class="bg-surface-container-lowest rounded-2xl p-lg border border-secondary-container shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-2xl" data-icon="water_drop">water_drop</span>
+</div>
+<div>
+<h3 class="font-headline-md text-on-surface text-lg">Water Intake</h3>
+<p class="text-label-md text-on-surface-variant">Keep your body hydrated</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox peer" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-secondary-container rounded-full transition-colors">
+<div class="toggle-dot absolute left-1 top-1 bg-on-secondary-container w-4 h-4 rounded-full transition-transform"></div>
+</div>
+</label>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-xs">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Frequency</span>
+<select class="w-full bg-surface-container border-none rounded-lg px-md py-sm font-label-md text-on-surface focus:ring-2 focus:ring-primary">
+<option>Every 2 hours</option>
+<option>Every 3 hours</option>
+<option>Morning & Afternoon</option>
+</select>
+</div>
+<div class="space-y-xs">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Window</span>
+<div class="flex items-center gap-xs">
+<input class="custom-time-picker w-full bg-surface-container border-none rounded-lg px-xs py-sm font-label-md text-on-surface" type="time" value="08:00"/>
+<span class="text-on-surface-variant">–</span>
+<input class="custom-time-picker w-full bg-surface-container border-none rounded-lg px-xs py-sm font-label-md text-on-surface" type="time" value="20:00"/>
+</div>
+</div>
+</div>
+</article>
+<!-- Health Screenings Reminder -->
+<article class="bg-surface-container-lowest rounded-2xl p-lg border border-secondary-container shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-fixed text-2xl" data-icon="medical_services">medical_services</span>
+</div>
+<div>
+<h3 class="font-headline-md text-on-surface text-lg">Health Screenings</h3>
+<p class="text-label-md text-on-surface-variant">Annual checkups and vaccinations</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only toggle-checkbox peer" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-secondary-container rounded-full transition-colors">
+<div class="toggle-dot absolute left-1 top-1 bg-on-secondary-container w-4 h-4 rounded-full transition-transform"></div>
+</div>
+</label>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant opacity-50 pointer-events-none">
+<div class="flex flex-col gap-sm">
+<div class="flex items-center justify-between bg-surface-container rounded-xl p-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="event">event</span>
+<span class="font-label-md text-on-surface">Next General Checkup</span>
+</div>
+<span class="font-label-md text-primary">Dec 2024</span>
+</div>
+<p class="text-label-sm text-on-surface-variant italic">Activate to receive alerts 1 week before scheduled screenings.</p>
+</div>
+</div>
+</article>
+</div>
+<!-- Encouraging Footer Illustration / Tip -->
+<div class="bg-primary/5 rounded-2xl p-lg flex items-center gap-lg">
+<div class="hidden md:block shrink-0 w-24 h-24 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional Malaysian nurse in a modern medical clinic smiling warmly at the camera, wearing a clean white uniform with a teal stethoscope, soft natural lighting through a window, clean and bright healthcare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqjJD_vsiw-9E_OlvfaV7WMytwMI2dUmZoCDt_gNwIzIghJgAUaRO7XnviSR2LL3bfElXMv-b3lzhkI5O-NRmJjKVjCUy0fr22jutOcaV2vanD6U0bLfI_CoX-6gXffdocF7mLFUnX0S-KJGX0lQaf7Y3ZVqvipjD_thigswfbW9d2nMHEq4UtN1PSDkkaUiPgSgBo4jQAX8A60KDvO_LFzdH8_KdDN32amYgcTapTa0uT3y1VY99G"/>
+</div>
+<div class="space-y-xs">
+<h4 class="font-headline-md text-primary text-base">You're doing great!</h4>
+<p class="text-label-md text-on-surface-variant">Users who set regular reminders are 40% more likely to reach their hydration and activity milestones.</p>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Actions -->
+<div class="fixed bottom-0 left-0 w-full z-40 bg-surface-container-lowest dark:bg-surface-container shadow-lg rounded-t-xl">
+<div class="max-w-xl mx-auto p-gutter flex flex-col gap-md">
+<button class="w-full py-md px-lg bg-primary text-on-primary font-headline-md text-lg rounded-full shadow-lg hover:shadow-xl hover:bg-primary-container transition-all active:scale-95" id="save-reminders" type="button">
+                Save Reminders
+            </button>
+<nav class="flex justify-around items-center pt-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150" href="../dashboard_page/code.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150" href="../profile_input_page/code.html">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-sm text-label-sm">Assess</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity active:scale-90 duration-150" href="../risk_insight_page/code.html">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed-variant rounded-full px-4 py-1 active:scale-90 transition-transform duration-150" href="code.html">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-label-sm text-label-sm">Actions</span>
+</a>
+</nav>
+</div>
+</div>
+<script>
+        // Simple micro-interaction for the toggles
+        document.querySelectorAll('.toggle-checkbox').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const parentCard = this.closest('article');
+                const secondaryContent = parentCard.querySelector('.mt-lg');
+                
+                if (this.checked) {
+                    secondaryContent.style.opacity = "1";
+                    secondaryContent.style.pointerEvents = "auto";
+                } else {
+                    secondaryContent.style.opacity = "0.5";
+                    secondaryContent.style.pointerEvents = "none";
+                }
+            });
+        });
+
+        // Save Reminders Animation
+        document.getElementById('save-reminders').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Saving...';
+            btn.classList.add('pointer-events-none', 'bg-primary-container');
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span> Saved Successfully!';
+                btn.classList.remove('bg-primary-container');
+                btn.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    window.location.href = '../dashboard_page/code.html';
+                }, 900);
+            }, 1500);
+        });
+    </script>
+</body></html>
