@@ -1,4 +1,4 @@
-# SihatQ Web App（小白跟做指南）
+# SihatQ Web App
 
 Next.js + Supabase MVP：注册登录 → 填 Profile → 规则算风险 → 对比 NHMS 公开统计。
 
@@ -10,6 +10,7 @@ Next.js + Supabase MVP：注册登录 → 填 Profile → 规则算风险 → �
 
 1. 已安装 **Node.js**（本机已有即可）
 2. 一个 **Supabase** 账号：[https://supabase.com](https://supabase.com)（可用 GitHub 登录）
+
 3.（可选，最后部署）**Vercel** 账号：[https://vercel.com](https://vercel.com)
 
 ---
@@ -27,8 +28,8 @@ Next.js + Supabase MVP：注册登录 → 填 Profile → 规则算风险 → �
 
 1. 左侧 **Project Settings**（齿轮）→ **API**
 2. 复制：
-   - **Project URL**（形如 `https://xxxx.supabase.co`）
-   - **anon public** key（一长串 JWT）
+  - **Project URL**（形如 `https://xxxx.supabase.co`）
+  - **anon public** key（一长串 JWT）
 
 ### 关闭邮箱确认（方便课堂演示）
 
@@ -43,15 +44,15 @@ Next.js + Supabase MVP：注册登录 → 填 Profile → 规则算风险 → �
 ## 2. 建表 + 导入 NHMS 种子数据
 
 1. 左侧打开 **SQL Editor** → **New query**
-2. 打开本仓库文件：[`supabase/migrations/001_init.sql`](supabase/migrations/001_init.sql)
+2. 打开本仓库文件：`[supabase/migrations/001_init.sql](supabase/migrations/001_init.sql)`
 3. 全选复制 → 粘贴到 SQL Editor → 点 **Run**
 4. 期望：成功、无报错
 5. 左侧 **Table Editor** 应能看到：
-   - `profiles`
-   - `health_reference_stats`（里面有 4 条 NHMS 2023 数据）
-   - `risk_results`
+  - `profiles`
+  - `health_reference_stats`（里面有 4 条 NHMS 2023 数据）
+  - `risk_results`
 
-CSV 备份在：[`supabase/seed/nhms_2023_key_findings.csv`](supabase/seed/nhms_2023_key_findings.csv)
+CSV 备份在：`[supabase/seed/nhms_2023_key_findings.csv](supabase/seed/nhms_2023_key_findings.csv)`
 
 ---
 
@@ -93,13 +94,15 @@ npm run dev
 
 ## 4. 项目结构（你只需要知道这些）
 
-| 路径 | 作用 |
-|---|---|
-| `src/app/*` | 页面（home、login、profile、insight、result-detail、reminders…） |
-| `src/app/api/assess/route.ts` | 保存 profile + 算风险 |
-| `src/lib/risk-engine.ts` | 规则引擎（if/else，不是 AI） |
-| `src/lib/supabase/*` | Supabase 客户端 |
-| `supabase/migrations/001_init.sql` | 数据库表 + RLS + NHMS 种子 |
+
+| 路径                                 | 作用                                                      |
+| ---------------------------------- | ------------------------------------------------------- |
+| `src/app/`*                        | 页面（home、login、profile、insight、result-detail、reminders…） |
+| `src/app/api/assess/route.ts`      | 保存 profile + 算风险                                        |
+| `src/lib/risk-engine.ts`           | 规则引擎（if/else，不是 AI）                                     |
+| `src/lib/supabase/*`               | Supabase 客户端                                            |
+| `supabase/migrations/001_init.sql` | 数据库表 + RLS + NHMS 种子                                    |
+
 
 ---
 
@@ -119,12 +122,12 @@ npm run dev
 2. Vercel → **Add New Project** → 选这个仓库
 3. **Root Directory** 设为 `web`
 4. Environment Variables 添加：
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 5. Deploy
 6. 回到 Supabase → **Authentication** → **URL Configuration**
-   - Site URL 改成你的 Vercel 域名
-   - Redirect URLs 加上 `https://你的域名/**`
+  - Site URL 改成你的 Vercel 域名
+  - Redirect URLs 加上 `https://你的域名/`**
 
 ---
 
