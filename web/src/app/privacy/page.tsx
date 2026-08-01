@@ -1,4 +1,4 @@
-import { acceptPrivacy } from "@/app/actions";
+import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { Disclaimer } from "@/components/Disclaimer";
 
@@ -38,14 +38,12 @@ export default function PrivacyPage() {
           </p>
         </div>
 
-        <form action={acceptPrivacy} className="mt-8">
-          <button
-            type="submit"
-            className="w-full rounded-full bg-primary py-4 font-semibold text-on-primary transition hover:bg-primary-container"
-          >
-            I Agree — Continue to Profile
-          </button>
-        </form>
+        <Link
+          href="/profile"
+          className="mt-8 flex w-full items-center justify-center rounded-full bg-primary py-4 font-semibold text-on-primary transition hover:bg-primary-container"
+        >
+          I Agree — Continue to Profile
+        </Link>
         <Disclaimer className="mt-6" />
       </main>
     </div>
