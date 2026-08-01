@@ -1,0 +1,5 @@
+indicator,year,value,unit,source_title,source_url
+diabetes,2023,15.6,percent,NHMS 2023 Key Findings,https://iku.gov.my/nhms-2023
+hypertension,2023,29.2,percent,NHMS 2023 Key Findings,https://iku.gov.my/nhms-2023
+high_cholesterol,2023,33.3,percent,NHMS 2023 Key Findings,https://iku.gov.my/nhms-2023
+overweight_obesity,2023,54.4,percent,NHMS 2023 Key Findings,https://iku.gov.my/nhms-2023
