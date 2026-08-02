@@ -54,6 +54,16 @@ Next.js + Supabase MVP：注册登录 → 填 Profile → 规则算风险 → �
 
 CSV 备份在：`[supabase/seed/nhms_2023_key_findings.csv](supabase/seed/nhms_2023_key_findings.csv)`
 
+### 可选：导入 DOSM 死亡数据（2024 deaths）
+
+1. 再开一个 SQL query
+2. 运行 `[supabase/migrations/002_seed_dosm_causes_of_death_2024.sql](supabase/migrations/002_seed_dosm_causes_of_death_2024.sql)`
+3. `health_reference_stats` 会多几条 DOSM 死因背景数据（IHD、pneumonia、diabetes deaths、transport accidents）
+
+CSV：`[supabase/seed/dosm_causes_of_death_2024_mvp.csv](supabase/seed/dosm_causes_of_death_2024_mvp.csv)`  
+来源：DOSM *Statistics on Causes of Death, Malaysia, 2025*（统计的是 2024 年死亡）。  
+用途：全国死亡背景 / AI 解释引用；**不是诊断模型**。现有评估页面仍主要用 NHMS 患病率对比。
+
 ---
 
 ## 3. 本地启动前端

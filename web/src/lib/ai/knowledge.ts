@@ -41,6 +41,45 @@ export const HEALTH_KNOWLEDGE: KnowledgeChunk[] = [
     source: "NHMS 2023 Key Findings",
   },
   {
+    id: "dosm-ihd",
+    title: "DOSM 2024 Ischaemic Heart Diseases",
+    tags: [
+      "heart",
+      "cardiovascular",
+      "ischaemic",
+      "death",
+      "mortality",
+      "dosm",
+    ],
+    content:
+      "DOSM Statistics on Causes of Death, Malaysia 2025 (reporting 2024 deaths): ischaemic heart diseases were the principal cause of medically certified deaths (13.0%, 17,421 deaths). For ages 41–59, IHD was the leading cause (17.6%). Used only as national mortality context, not diagnosis.",
+    source: "DOSM Statistics on Causes of Death, Malaysia, 2025",
+  },
+  {
+    id: "dosm-pneumonia",
+    title: "DOSM 2024 Pneumonia",
+    tags: ["pneumonia", "death", "mortality", "elderly", "60+", "dosm"],
+    content:
+      "DOSM 2025 release (2024 deaths): pneumonia was the second highest cause of medically certified deaths nationally (11.5%, 15,332 deaths), and the principal cause for ages 60+ (13.9%). National mortality context only.",
+    source: "DOSM Statistics on Causes of Death, Malaysia, 2025",
+  },
+  {
+    id: "dosm-diabetes-death",
+    title: "DOSM 2024 Diabetes Mellitus Deaths",
+    tags: ["diabetes", "death", "mortality", "metabolic", "dosm"],
+    content:
+      "DOSM 2025 release (2024 deaths): diabetes mellitus accounted for 5.2% of medically certified deaths (6,929 deaths). This is mortality context; NHMS prevalence (15.6% of adults) is a separate prevalence statistic.",
+    source: "DOSM Statistics on Causes of Death, Malaysia, 2025",
+  },
+  {
+    id: "dosm-transport",
+    title: "DOSM 2024 Transport Accidents",
+    tags: ["transport", "accident", "death", "young", "15-40", "mortality", "dosm"],
+    content:
+      "DOSM 2025 release (2024 deaths): transport accidents were 3.3% of medically certified deaths nationally, and the principal cause for ages 15–40 (20.0%). National mortality context only.",
+    source: "DOSM Statistics on Causes of Death, Malaysia, 2025",
+  },
+  {
     id: "screening",
     title: "Health screening guidance",
     tags: ["screening", "clinic", "peka", "checkup", "doctor", "test"],

@@ -8,7 +8,12 @@ Malaysia preventive health risk insight prototype.
    Open with any static server for the original clickable mock.
 
 2. **Full-stack MVP** in [`web/`](web/)  
-   Next.js + Supabase Auth + Postgres + rule-based risk engine + NHMS reference stats.
+   Next.js + Supabase Auth + Postgres + rule-based risk engine + NHMS reference stats + optional DOSM mortality seed.
+
+## Data notes
+
+- **NHMS 2023**: adult prevalence (diabetes, hypertension, cholesterol, obesity) for personalised risk comparison.
+- **DOSM Causes of Death 2025 release (2024 deaths)**: national mortality context (e.g. ischaemic heart disease, pneumonia, diabetes mellitus, transport accidents). Prepared as a next-stage / AI-context dataset — not used as a diagnosis model.
 
 ## Quick start (recommended)
 

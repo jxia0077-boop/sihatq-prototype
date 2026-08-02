@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
+import { DosmMortalityCard } from "@/components/DosmMortalityCard";
 import { createClient } from "@/lib/supabase/server";
 import type { Recommendation } from "@/lib/types";
 
@@ -231,6 +232,8 @@ export default async function ResultDetailPage() {
             </article>
           ))}
         </div>
+
+        <DosmMortalityCard />
 
         <h3 className="mb-4 mt-10 font-headline text-xl font-semibold">
           Recommendations snapshot

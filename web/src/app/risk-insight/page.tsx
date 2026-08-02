@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
+import { DosmMortalityCard } from "@/components/DosmMortalityCard";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -87,10 +88,12 @@ export default async function RiskInsightPage() {
 
         <div className="mt-6 rounded-2xl border border-outline-variant/30 bg-surface-container p-5">
           <p className="text-sm font-semibold uppercase text-on-surface-variant">
-            National comparison
+            National comparison (NHMS prevalence)
           </p>
           <p className="mt-2 text-on-surface">{result.comparison_text}</p>
         </div>
+
+        <DosmMortalityCard />
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
