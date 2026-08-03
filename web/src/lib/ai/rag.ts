@@ -1,4 +1,5 @@
 import { retrieveKnowledge } from "@/lib/ai/knowledge";
+import { retrieveKnowledgeHybrid } from "@/lib/ai/retrieve";
 
 type RiskContext = {
   risk_category?: string;
@@ -15,6 +16,7 @@ function buildFallbackAnswer(
   question: string,
   risk: RiskContext,
   sources: string[],
+  retrieved = retrieveKnowledge(question),
 ): string {
   const lines: string[] = [];
 
@@ -30,7 +32,6 @@ function buildFallbackAnswer(
     );
   }
 
-  const retrieved = retrieveKnowledge(question);
   for (const chunk of retrieved) {
     if (chunk.id === "disclaimer") continue;
     lines.push(`${chunk.content} (Source: ${chunk.source})`);
@@ -200,8 +201,13 @@ async function callGemini(prompt: string): Promise<string | null> {
 export async function answerWithLightRag(
   question: string,
   risk: RiskContext,
-): Promise<{ answer: string; sources: string[]; mode: "llm" | "rules" }> {
-  const chunks = retrieveKnowledge(question);
+): Promise<{
+  answer: string;
+  sources: string[];
+  mode: "llm" | "rules";
+  retrieval: "pgvector" | "keyword";
+}> {
+  const { chunks, mode: retrieval } = await retrieveKnowledgeHybrid(question);
   const sources = Array.from(new Set(chunks.map((c) => c.source)));
 
   const context = [
@@ -215,7 +221,7 @@ export async function answerWithLightRag(
           .map((r) => r.title)
           .join("; ")}`
       : "User has no saved risk result yet.",
-    "Retrieved public knowledge:",
+    `Retrieved public knowledge (${retrieval}):`,
     ...chunks.map((c) => `- [${c.source}] ${c.content}`),
     `User question: ${question}`,
     "Write a helpful answer using only this context.",
@@ -229,12 +235,13 @@ export async function answerWithLightRag(
     (await callOpenAI(context));
 
   if (llm) {
-    return { answer: llm, sources, mode: "llm" };
+    return { answer: llm, sources, mode: "llm", retrieval };
   }
 
   return {
-    answer: buildFallbackAnswer(question, risk, sources),
+    answer: buildFallbackAnswer(question, risk, sources, chunks),
     sources,
     mode: "rules",
+    retrieval,
   };
 }

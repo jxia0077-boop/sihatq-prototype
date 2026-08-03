@@ -129,6 +129,22 @@ UPSTASH_REDIS_REST_TOKEN=your_token
 4. 重启 `npm run dev`  
 未配置时应用照常运行，只是跳过缓存。
 
+### 可选：pgvector RAG（AI 知识检索）
+
+把 NHMS/DOSM 知识片段存进 Postgres + 向量检索；失败时自动回退关键词 RAG。
+
+1. Supabase SQL Editor 运行 `[supabase/migrations/004_pgvector_knowledge.sql](supabase/migrations/004_pgvector_knowledge.sql)`  
+   （若提示 extension 权限，先在 Database → Extensions 启用 **vector**）
+2. 本地生成并写入 embeddings：
+
+```bash
+cd web
+npm run seed:knowledge
+```
+
+需要：`SUPABASE_SERVICE_ROLE_KEY` + `GEMINI_API_KEY`  
+3. 重启 `npm run dev`，问 AI 后看 API 响应里的 `retrieval: "pgvector"`（成功）或 `"keyword"`（回退）
+
 ### 演示路径
 
 1. **Sign up** 注册
@@ -148,6 +164,8 @@ UPSTASH_REDIS_REST_TOKEN=your_token
 | `src/app/admin/*`                  | 后台：概览 / 参考统计 CRUD / 评估列表                             |
 | `src/lib/risk-engine.ts`           | 规则引擎（if/else，不是 AI）                                     |
 | `src/lib/redis.ts`                 | 可选 Upstash Redis：缓存公开健康统计                              |
+| `src/lib/ai/retrieve.ts`           | 混合检索：pgvector 优先，关键词兜底                               |
+| `supabase/migrations/004_pgvector_knowledge.sql` | AI 知识表 + match_knowledge_chunks |
 | `src/lib/supabase/*`               | Supabase 客户端                                            |
 | `supabase/migrations/001_init.sql` | 数据库表 + RLS + NHMS 种子                                    |
 

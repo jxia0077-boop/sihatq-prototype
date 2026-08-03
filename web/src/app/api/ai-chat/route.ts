@@ -42,6 +42,7 @@ export async function POST(request: Request) {
       reply: result.answer,
       sources: result.sources,
       mode: result.mode,
+      retrieval: result.retrieval,
     });
   } catch {
     return NextResponse.json(
