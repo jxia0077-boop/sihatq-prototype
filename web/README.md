@@ -249,16 +249,17 @@ flowchart TB
     API_Assess["POST /api/assess"]
     API_AI["POST /api/ai-chat"]
     Risk["risk-engine.ts<br/>Rule-based engine · not medical diagnosis"]
-    RAG["ai/rag.ts + knowledge.ts<br/>Light RAG"]
+    RAG["ai/rag.ts + retrieve.ts<br/>pgvector RAG · keyword fallback"]
     LLM["Optional LLM<br/>Gemini / Doubao / Groq / OpenAI<br/>falls back to rules"]
   end
 
   subgraph Supa["Supabase"]
     Auth["Auth<br/>auth.users"]
-    DB[(Postgres)]
+    DB[(Postgres + pgvector)]
     Profiles["profiles"]
     Stats["health_reference_stats<br/>NHMS + DOSM"]
     Results["risk_results"]
+    Knowledge["knowledge_chunks"]
   end
 
   Forms -->|email/password| Auth
@@ -276,13 +277,14 @@ flowchart TB
 
   API_AI --> Results
   API_AI --> RAG
+  RAG --> Knowledge
   RAG --> LLM
 ```
 
 **Layers**
 - **Frontend:** pages, forms, AI chat widget
-- **Application:** auth middleware, assess API, AI API, rule engine, local knowledge base
-- **Data:** Supabase Auth + `profiles` / `health_reference_stats` / `risk_results`
+- **Application:** auth middleware, assess API, AI API, rule engine, hybrid RAG (pgvector + keyword)
+- **Data:** Supabase Auth + `profiles` / `health_reference_stats` / `risk_results` / `knowledge_chunks`
 
 ### Main assessment flow
 
@@ -304,6 +306,68 @@ sequenceDiagram
   A-->>P: OK
   P->>U: → /analyzing → /risk-insight
 ```
+
+### AI Chat + RAG flow
+
+```mermaid
+flowchart TB
+  subgraph UI["Chatbot UI"]
+    Fab["AiChatWidget / /ai-assistant"]
+  end
+
+  subgraph API["POST /api/ai-chat"]
+    Auth["Supabase Auth<br/>login required"]
+    Risk["Load latest risk_results<br/>personal assessment context"]
+    Hybrid["retrieveKnowledgeHybrid"]
+  end
+
+  subgraph Retrieve["Retrieval · RAG"]
+    Emb["Gemini embedding<br/>gemini-embedding-001 · 768d"]
+    PG["Supabase pgvector<br/>match_knowledge_chunks"]
+    KW["Keyword fallback<br/>knowledge.ts tags"]
+  end
+
+  subgraph Gen["Generation"]
+    Prompt["Build context:<br/>risk + retrieved chunks + question"]
+    LLM["LLM attempt order<br/>Gemini → Doubao → Groq → OpenAI"]
+    Rules["Rules fallback<br/>compose public knowledge + disclaimer"]
+  end
+
+  DB[(knowledge_chunks<br/>NHMS / DOSM / lifestyle)]
+  Results[(risk_results)]
+
+  Fab -->|message| Auth
+  Auth --> Risk
+  Risk --> Results
+  Auth --> Hybrid
+  Hybrid --> Emb
+  Emb --> PG
+  PG --> DB
+  PG -->|hits| Prompt
+  PG -->|fail / empty| KW
+  KW --> Prompt
+  Prompt --> LLM
+  LLM -->|success| Fab
+  LLM -->|all fail| Rules
+  Rules --> Fab
+```
+
+**Retrieval detail**
+
+```mermaid
+flowchart LR
+  Q[User question] --> E[Embed query]
+  E -->|GEMINI_API_KEY present| V[pgvector similarity search]
+  E -->|no key / error| K[Keyword scoring]
+  V -->|similarity > 0.4| C[Top chunks + disclaimer]
+  V -->|no hits| K
+  K --> C2[Top tag matches + disclaimer]
+  C --> Out[Retrieved context]
+  C2 --> Out
+```
+
+One-liner: **UI → auth → load personal risk → retrieve public knowledge (pgvector first, keyword fallback) → call LLM; if LLM fails, use rule-based answer.**  
+API flags: `retrieval: "pgvector" | "keyword"`, `mode: "llm" | "rules"`.
 
 ---
 
