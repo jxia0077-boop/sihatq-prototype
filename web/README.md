@@ -93,6 +93,26 @@ npm run dev
 
 浏览器打开：[http://localhost:3000](http://localhost:3000)
 
+### 后台管理系统（Admin）
+
+登录后打开：[http://localhost:3000/admin](http://localhost:3000/admin)
+
+- **Overview**：profiles / assessments / reference stats 数量
+- **Reference stats**：查看并增删改 NHMS / DOSM 数据
+- **Assessments**：查看全部用户最近评估（只读）
+
+在 `.env.local` 中配置：
+
+```env
+ADMIN_EMAILS=you@example.com
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+```
+
+说明：
+- 必须设置 `ADMIN_EMAILS`（逗号分隔）作为**首个管理员兜底**；也可在 Users 页把别人设为 admin
+- 先在 Supabase 运行 `[supabase/migrations/003_user_roles.sql](supabase/migrations/003_user_roles.sql)`，才能 Make admin / Remove admin
+- 没有 `SUPABASE_SERVICE_ROLE_KEY` 时仍可打开页面；跨用户统计与写入需要该密钥（**只放服务器，勿提交 Git**）
+
 ### 演示路径
 
 1. **Sign up** 注册
@@ -109,6 +129,7 @@ npm run dev
 | ---------------------------------- | ------------------------------------------------------- |
 | `src/app/`*                        | 页面（home、login、profile、insight、result-detail、reminders…） |
 | `src/app/api/assess/route.ts`      | 保存 profile + 算风险                                        |
+| `src/app/admin/*`                  | 后台：概览 / 参考统计 CRUD / 评估列表                             |
 | `src/lib/risk-engine.ts`           | 规则引擎（if/else，不是 AI）                                     |
 | `src/lib/supabase/*`               | Supabase 客户端                                            |
 | `supabase/migrations/001_init.sql` | 数据库表 + RLS + NHMS 种子                                    |

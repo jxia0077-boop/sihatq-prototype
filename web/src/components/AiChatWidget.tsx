@@ -17,7 +17,19 @@ const SUGGESTIONS = [
   "What does my NHMS comparison mean?",
 ];
 
-const HIDDEN_PATHS = ["/", "/login", "/sign-up", "/start-alt", "/ai-assistant"];
+const HIDDEN_PATHS = [
+  "/",
+  "/login",
+  "/sign-up",
+  "/start-alt",
+  "/ai-assistant",
+];
+
+function shouldHideWidget(pathname: string) {
+  return (
+    HIDDEN_PATHS.includes(pathname) || pathname.startsWith("/admin")
+  );
+}
 
 export function AiChatWidget() {
   const pathname = usePathname();
@@ -40,9 +52,7 @@ export function AiChatWidget() {
   ]);
   const listRef = useRef<HTMLDivElement>(null);
 
-  const hidden = HIDDEN_PATHS.some(
-    (path) => pathname === path || pathname.startsWith("/api"),
-  );
+  const hidden = shouldHideWidget(pathname);
 
   useEffect(() => {
     if (!open) return;

@@ -3,6 +3,7 @@ import { signOut } from "@/app/actions";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
+import { isAdminUser } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,7 @@ export default async function DashboardPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  const showAdmin = await isAdminUser(user);
 
   const { data: latestRisk } = await supabase
     .from("risk_results")
@@ -74,6 +76,18 @@ export default async function DashboardPage() {
               </Link>
             </div>
           </div>
+        ) : null}
+
+        {showAdmin ? (
+          <Link
+            href="/admin"
+            className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-outline-variant/40 bg-surface-container-lowest px-4 py-3 text-sm font-semibold text-primary shadow-sm"
+          >
+            <span className="material-symbols-outlined text-[20px]">
+              admin_panel_settings
+            </span>
+            Open admin console
+          </Link>
         ) : null}
 
         <form action={signOut} className="mt-8">
