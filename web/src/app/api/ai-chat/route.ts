@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 
 const bodySchema = z.object({
   message: z.string().trim().min(2).max(500),
+  stream: z.boolean().optional(),
 });
 
 export async function POST(request: Request) {
@@ -26,6 +27,10 @@ export async function POST(request: Request) {
       );
     }
 
+    const wantsStream =
+      parsed.data.stream === true ||
+      (request.headers.get("accept") || "").includes("text/event-stream");
+
     const { data: risk } = await supabase
       .from("risk_results")
       .select(
@@ -36,13 +41,76 @@ export async function POST(request: Request) {
       .limit(1)
       .maybeSingle();
 
-    const result = await answerWithLightRag(parsed.data.message, risk);
+    if (!wantsStream) {
+      const thinking: { id: string; label: string; detail?: string }[] = [];
+      const result = await answerWithLightRag(
+        parsed.data.message,
+        risk,
+        (step) => {
+          thinking.push(step);
+        },
+      );
+      return NextResponse.json({
+        reply: result.answer,
+        sources: result.sources,
+        mode: result.mode,
+        retrieval: result.retrieval,
+        thinking,
+      });
+    }
 
-    return NextResponse.json({
-      reply: result.answer,
-      sources: result.sources,
-      mode: result.mode,
-      retrieval: result.retrieval,
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        const send = (payload: unknown) => {
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify(payload)}\n\n`),
+          );
+        };
+
+        try {
+          send({
+            type: "thinking",
+            step: {
+              id: "start",
+              label: "Getting ready…",
+            },
+          });
+
+          const result = await answerWithLightRag(
+            parsed.data.message,
+            risk,
+            async (step) => {
+              send({ type: "thinking", step });
+            },
+          );
+
+          send({
+            type: "done",
+            payload: {
+              reply: result.answer,
+              sources: result.sources,
+              mode: result.mode,
+              retrieval: result.retrieval,
+            },
+          });
+        } catch {
+          send({
+            type: "error",
+            error: "AI assistant is temporarily unavailable.",
+          });
+        } finally {
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-cache, no-transform",
+        Connection: "keep-alive",
+      },
     });
   } catch {
     return NextResponse.json(

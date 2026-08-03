@@ -201,14 +201,48 @@ async function callGemini(prompt: string): Promise<string | null> {
 export async function answerWithLightRag(
   question: string,
   risk: RiskContext,
+  onThinking?: (step: {
+    id: string;
+    label: string;
+    detail?: string;
+  }) => void | Promise<void>,
 ): Promise<{
   answer: string;
   sources: string[];
   mode: "llm" | "rules";
   retrieval: "pgvector" | "keyword";
 }> {
+  await onThinking?.({
+    id: "retrieve-start",
+    label: "Reading your question…",
+  });
+
   const { chunks, mode: retrieval } = await retrieveKnowledgeHybrid(question);
   const sources = Array.from(new Set(chunks.map((c) => c.source)));
+
+  const topicLines = chunks
+    .filter((c) => c.id !== "disclaimer")
+    .map((c) => `• ${c.title}`)
+    .join("\n");
+
+  await onThinking?.({
+    id: "retrieve-done",
+    label: "Looking up related Malaysian health information…",
+    detail: topicLines || undefined,
+  });
+
+  if (risk?.risk_category) {
+    await onThinking?.({
+      id: "risk-context",
+      label: "Connecting this to your SihatQ results…",
+      detail: `${risk.risk_category} · ${risk.risk_level || "n/a"}`,
+    });
+  } else {
+    await onThinking?.({
+      id: "risk-context",
+      label: "No personal assessment yet — using general guidance…",
+    });
+  }
 
   const context = [
     risk
@@ -227,6 +261,11 @@ export async function answerWithLightRag(
     "Write a helpful answer using only this context.",
   ].join("\n");
 
+  await onThinking?.({
+    id: "llm-start",
+    label: "Drafting a clear answer for you…",
+  });
+
   // Prefer Gemini for now (switch order later if using Doubao)
   const llm =
     (await callGemini(context)) ||
@@ -235,8 +274,18 @@ export async function answerWithLightRag(
     (await callOpenAI(context));
 
   if (llm) {
+    await onThinking?.({
+      id: "llm-done",
+      label: "Finishing up…",
+      detail: "This is preventive guidance only — not a medical diagnosis.",
+    });
     return { answer: llm, sources, mode: "llm", retrieval };
   }
+
+  await onThinking?.({
+    id: "rules-fallback",
+    label: "Preparing a simple explanation from your results…",
+  });
 
   return {
     answer: buildFallbackAnswer(question, risk, sources, chunks),

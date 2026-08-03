@@ -3,11 +3,19 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  ThinkingTrace,
+  type ThinkingStep,
+} from "@/components/ThinkingTrace";
+import { TypewriterText } from "@/components/TypewriterText";
+import { streamAiChat } from "@/lib/ai/chat-client";
 
 type ChatMessage = {
   id: string;
   role: "assistant" | "user";
   content: string;
+  thinking?: ThinkingStep[];
+  animate?: boolean;
 };
 
 const SUGGESTIONS = [
@@ -26,9 +34,7 @@ const HIDDEN_PATHS = [
 ];
 
 function shouldHideWidget(pathname: string) {
-  return (
-    HIDDEN_PATHS.includes(pathname) || pathname.startsWith("/admin")
-  );
+  return HIDDEN_PATHS.includes(pathname) || pathname.startsWith("/admin");
 }
 
 export function AiChatWidget() {
@@ -36,6 +42,8 @@ export function AiChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [liveThinking, setLiveThinking] = useState<ThinkingStep[]>([]);
+  const thinkingRef = useRef<ThinkingStep[]>([]);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome-1",
@@ -60,7 +68,7 @@ export function AiChatWidget() {
       top: listRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages, open, loading]);
+  }, [messages, open, loading, liveThinking]);
 
   if (hidden) return null;
 
@@ -74,23 +82,22 @@ export function AiChatWidget() {
       { id: `u-${Date.now()}`, role: "user", content: message },
     ]);
     setLoading(true);
+    setLiveThinking([]);
+    thinkingRef.current = [];
 
     try {
-      const response = await fetch("/api/ai-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+      const data = await streamAiChat(message, (steps) => {
+        thinkingRef.current = steps;
+        setLiveThinking(steps);
       });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to get reply");
-      }
       setMessages((current) => [
         ...current,
         {
           id: `a-${Date.now()}`,
           role: "assistant",
           content: data.reply,
+          thinking: data.thinking,
+          animate: true,
         },
       ]);
     } catch (error) {
@@ -103,10 +110,16 @@ export function AiChatWidget() {
             error instanceof Error
               ? error.message
               : "Sorry, I could not answer right now.",
+          thinking:
+            thinkingRef.current.length > 0
+              ? thinkingRef.current
+              : undefined,
         },
       ]);
     } finally {
       setLoading(false);
+      setLiveThinking([]);
+      thinkingRef.current = [];
     }
   }
 
@@ -117,7 +130,6 @@ export function AiChatWidget() {
 
   return (
     <>
-      {/* Floating bot button */}
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -167,11 +179,36 @@ export function AiChatWidget() {
                     : "mr-8 rounded-2xl rounded-bl-sm border border-outline-variant/30 bg-white px-3 py-2 text-sm text-on-surface shadow-sm"
                 }
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                {message.role === "assistant" && message.thinking?.length ? (
+                  <ThinkingTrace steps={message.thinking} />
+                ) : null}
+                <p className="whitespace-pre-wrap">
+                  {message.role === "assistant" && message.animate ? (
+                    <TypewriterText
+                      text={message.content}
+                      enabled
+                      speedMs={8}
+                      onDone={() => {
+                        setMessages((current) =>
+                          current.map((item) =>
+                            item.id === message.id
+                              ? { ...item, animate: false }
+                              : item,
+                          ),
+                        );
+                      }}
+                    />
+                  ) : (
+                    message.content
+                  )}
+                </p>
               </div>
             ))}
+
             {loading ? (
-              <p className="text-xs text-on-surface-variant">Thinking...</p>
+              <div className="mr-8 rounded-2xl rounded-bl-sm border border-outline-variant/30 bg-white px-3 py-2 shadow-sm">
+                <ThinkingTrace steps={liveThinking} active />
+              </div>
             ) : null}
 
             <div className="space-y-2 pt-2">

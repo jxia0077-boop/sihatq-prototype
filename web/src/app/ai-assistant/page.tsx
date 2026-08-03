@@ -5,11 +5,19 @@ import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
+import {
+  ThinkingTrace,
+  type ThinkingStep,
+} from "@/components/ThinkingTrace";
+import { TypewriterText } from "@/components/TypewriterText";
+import { streamAiChat } from "@/lib/ai/chat-client";
 
 type ChatMessage = {
   id: string;
   role: "assistant" | "user";
   content: string;
+  thinking?: ThinkingStep[];
+  animate?: boolean;
 };
 
 const SUGGESTIONS = [
@@ -22,6 +30,8 @@ const SUGGESTIONS = [
 export default function AiAssistantPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [liveThinking, setLiveThinking] = useState<ThinkingStep[]>([]);
+  const thinkingRef = useRef<ThinkingStep[]>([]);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome-1",
@@ -43,7 +53,7 @@ export default function AiAssistantPage() {
       top: listRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages, loading]);
+  }, [messages, loading, liveThinking]);
 
   async function sendMessage(text: string) {
     const message = text.trim();
@@ -55,20 +65,23 @@ export default function AiAssistantPage() {
       { id: `u-${Date.now()}`, role: "user", content: message },
     ]);
     setLoading(true);
+    setLiveThinking([]);
+    thinkingRef.current = [];
 
     try {
-      const response = await fetch("/api/ai-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+      const data = await streamAiChat(message, (steps) => {
+        thinkingRef.current = steps;
+        setLiveThinking(steps);
       });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to get reply");
-      }
       setMessages((current) => [
         ...current,
-        { id: `a-${Date.now()}`, role: "assistant", content: data.reply },
+        {
+          id: `a-${Date.now()}`,
+          role: "assistant",
+          content: data.reply,
+          thinking: data.thinking,
+          animate: true,
+        },
       ]);
     } catch (error) {
       setMessages((current) => [
@@ -80,10 +93,16 @@ export default function AiAssistantPage() {
             error instanceof Error
               ? error.message
               : "Sorry, I could not answer right now.",
+          thinking:
+            thinkingRef.current.length > 0
+              ? thinkingRef.current
+              : undefined,
         },
       ]);
     } finally {
       setLoading(false);
+      setLiveThinking([]);
+      thinkingRef.current = [];
     }
   }
 
@@ -130,14 +149,36 @@ export default function AiAssistantPage() {
                 </span>
               </div>
             ) : null}
+            {message.role === "assistant" && message.thinking?.length ? (
+              <ThinkingTrace steps={message.thinking} />
+            ) : null}
             <p className="whitespace-pre-wrap text-[15px] leading-relaxed">
-              {message.content}
+              {message.role === "assistant" && message.animate ? (
+                <TypewriterText
+                  text={message.content}
+                  enabled
+                  speedMs={8}
+                  onDone={() => {
+                    setMessages((current) =>
+                      current.map((item) =>
+                        item.id === message.id
+                          ? { ...item, animate: false }
+                          : item,
+                      ),
+                    );
+                  }}
+                />
+              ) : (
+                message.content
+              )}
             </p>
           </div>
         ))}
 
         {loading ? (
-          <p className="text-sm text-on-surface-variant">Thinking...</p>
+          <div className="mr-auto max-w-[85%] rounded-2xl border border-outline-variant/30 bg-white p-4 shadow-sm">
+            <ThinkingTrace steps={liveThinking} active />
+          </div>
         ) : null}
 
         <div className="space-y-3 pt-4">
