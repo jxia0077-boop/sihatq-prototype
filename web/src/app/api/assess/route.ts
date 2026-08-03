@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { assessRisk } from "@/lib/risk-engine";
+import {
+  CACHE_KEYS,
+  cacheGet,
+  cacheSet,
+} from "@/lib/redis";
 import { createClient } from "@/lib/supabase/server";
 import type { HealthReferenceStat } from "@/lib/types";
 import { profileInputSchema } from "@/lib/validation";
@@ -48,20 +53,31 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: statsData, error: statsError } = await supabase
-      .from("health_reference_stats")
-      .select(
-        "id, indicator, year, value, unit, source_title, source_url",
-      );
+    let stats =
+      (await cacheGet<HealthReferenceStat[]>(CACHE_KEYS.allReferenceStats)) ||
+      null;
 
-    if (statsError) {
-      return NextResponse.json(
-        { error: "Could not load reference stats. Did you run the SQL migration?" },
-        { status: 500 },
-      );
+    if (!stats) {
+      const { data: statsData, error: statsError } = await supabase
+        .from("health_reference_stats")
+        .select(
+          "id, indicator, year, value, unit, source_title, source_url",
+        );
+
+      if (statsError) {
+        return NextResponse.json(
+          {
+            error:
+              "Could not load reference stats. Did you run the SQL migration?",
+          },
+          { status: 500 },
+        );
+      }
+
+      stats = (statsData || []) as HealthReferenceStat[];
+      await cacheSet(CACHE_KEYS.allReferenceStats, stats);
     }
 
-    const stats = (statsData || []) as HealthReferenceStat[];
     const assessment = assessRisk(profile, stats);
 
     const { data: riskRow, error: riskError } = await supabase

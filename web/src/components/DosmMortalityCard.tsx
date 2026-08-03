@@ -1,3 +1,4 @@
+import { CACHE_KEYS, cacheGet, cacheSet } from "@/lib/redis";
 import { createClient } from "@/lib/supabase/server";
 
 type StatRow = {
@@ -59,13 +60,23 @@ const FALLBACK: StatRow[] = [
 ];
 
 export async function DosmMortalityCard() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("health_reference_stats")
-    .select("indicator, value, unit, age_group, source_title, source_url")
-    .eq("year", 2024)
-    .in("indicator", Object.keys(LABEL))
-    .order("value", { ascending: false });
+  let data =
+    (await cacheGet<StatRow[]>(CACHE_KEYS.dosm2024)) || null;
+
+  if (!data) {
+    const supabase = await createClient();
+    const { data: rows } = await supabase
+      .from("health_reference_stats")
+      .select("indicator, value, unit, age_group, source_title, source_url")
+      .eq("year", 2024)
+      .in("indicator", Object.keys(LABEL))
+      .order("value", { ascending: false });
+
+    data = (rows || []) as StatRow[];
+    if (data.length > 0) {
+      await cacheSet(CACHE_KEYS.dosm2024, data);
+    }
+  }
 
   const rows = (data && data.length > 0 ? data : FALLBACK) as StatRow[];
   const national = rows.filter(

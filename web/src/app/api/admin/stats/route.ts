@@ -4,6 +4,7 @@ import {
   hasServiceRoleKey,
   isAdminUser,
 } from "@/lib/admin";
+import { invalidateHealthStatsCache } from "@/lib/redis";
 import { createClient } from "@/lib/supabase/server";
 
 async function assertAdmin() {
@@ -77,6 +78,7 @@ export async function POST(request: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
+  await invalidateHealthStatsCache();
   return NextResponse.json({ row: data });
 }
 
@@ -104,6 +106,7 @@ export async function PATCH(request: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
+  await invalidateHealthStatsCache();
   return NextResponse.json({ row: data });
 }
 
@@ -126,5 +129,6 @@ export async function DELETE(request: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
+  await invalidateHealthStatsCache();
   return NextResponse.json({ ok: true });
 }

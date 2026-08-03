@@ -113,6 +113,22 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 - 先在 Supabase 运行 `[supabase/migrations/003_user_roles.sql](supabase/migrations/003_user_roles.sql)`，才能 Make admin / Remove admin
 - 没有 `SUPABASE_SERVICE_ROLE_KEY` 时仍可打开页面；跨用户统计与写入需要该密钥（**只放服务器，勿提交 Git**）
 
+### 可选：Upstash Redis 缓存
+
+用于缓存公开的 `health_reference_stats`（评估 API + DOSM 卡片），后台改统计时会自动清缓存。
+
+1. 打开 [Upstash Console](https://console.upstash.com) → Create Database（Redis）
+2. 复制 **REST URL** 和 **REST TOKEN**
+3. 写入 `.env.local`（或 Vercel Environment Variables）：
+
+```env
+UPSTASH_REDIS_REST_URL=https://xxxx.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your_token
+```
+
+4. 重启 `npm run dev`  
+未配置时应用照常运行，只是跳过缓存。
+
 ### 演示路径
 
 1. **Sign up** 注册
@@ -131,6 +147,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 | `src/app/api/assess/route.ts`      | 保存 profile + 算风险                                        |
 | `src/app/admin/*`                  | 后台：概览 / 参考统计 CRUD / 评估列表                             |
 | `src/lib/risk-engine.ts`           | 规则引擎（if/else，不是 AI）                                     |
+| `src/lib/redis.ts`                 | 可选 Upstash Redis：缓存公开健康统计                              |
 | `src/lib/supabase/*`               | Supabase 客户端                                            |
 | `supabase/migrations/001_init.sql` | 数据库表 + RLS + NHMS 种子                                    |
 
