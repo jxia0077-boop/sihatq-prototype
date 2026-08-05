@@ -10,6 +10,11 @@ import {
   type FamilyHistoryOption,
   type Lifestyle,
 } from "@/lib/types";
+import {
+  fieldErrorsFromZod,
+  profileInputSchema,
+  type ProfileFieldErrors,
+} from "@/lib/validation";
 
 const familyLabels: Record<FamilyHistoryOption, string> = {
   diabetes: "Diabetes",
@@ -17,6 +22,15 @@ const familyLabels: Record<FamilyHistoryOption, string> = {
   hypertension: "Hypertension",
   none: "None",
 };
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return (
+    <p className="mt-2 text-sm font-medium text-error" role="alert">
+      {message}
+    </p>
+  );
+}
 
 export function ProfileForm() {
   const router = useRouter();
@@ -29,7 +43,8 @@ export function ProfileForm() {
     high_sugar: false,
   });
   const [familyHistory, setFamilyHistory] = useState<FamilyHistoryOption[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<ProfileFieldErrors>({});
+  const [formError, setFormError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   function toggleFamily(option: FamilyHistoryOption) {
@@ -43,56 +58,86 @@ export function ProfileForm() {
       }
       return [...withoutNone, option];
     });
+    setFieldErrors((current) => ({ ...current, family_history: undefined }));
   }
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    setError(null);
+    setFormError(null);
+
+    const payload = {
+      age_group: ageGroup,
+      gender,
+      state,
+      lifestyle,
+      family_history: familyHistory,
+    };
+
+    const parsed = profileInputSchema.safeParse(payload);
+    if (!parsed.success) {
+      setFieldErrors(fieldErrorsFromZod(parsed.error));
+      return;
+    }
+
+    setFieldErrors({});
     setLoading(true);
 
     try {
       const response = await fetch("/api/assess", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          age_group: ageGroup,
-          gender,
-          state,
-          lifestyle,
-          family_history: familyHistory,
-        }),
+        // AC 1.2.1 — send only the allowed minimal fields.
+        body: JSON.stringify(parsed.data),
       });
 
-      const payload = await response.json();
+      const result = await response.json();
       if (!response.ok) {
-        setError(payload.error || "Could not save profile.");
+        if (result.fieldErrors) {
+          setFieldErrors(result.fieldErrors as ProfileFieldErrors);
+        }
+        setFormError(result.error || "Could not save profile.");
         return;
       }
 
       router.push("/analyzing");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setFormError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <form className="space-y-8" onSubmit={onSubmit}>
+    <form className="space-y-8" onSubmit={onSubmit} noValidate>
+      <div className="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest px-4 py-3 text-sm text-on-surface-variant">
+        <p className="font-semibold text-on-surface">Minimal data only</p>
+        <p className="mt-1">
+          We ask only for age group, gender, Malaysian state, lifestyle factors,
+          and broad family-history categories. There is no field for NRIC/MyKad,
+          exact date of birth, name, home address, or clinic lab results /
+          diagnoses.
+        </p>
+      </div>
+
       <section className="rounded-2xl bg-surface-container p-6">
         <div className="mb-4 flex items-center gap-2">
           <span className="material-symbols-outlined text-primary">cake</span>
           <h3 className="font-headline text-xl font-semibold">Age Group</h3>
         </div>
         <select
-          required
           value={ageGroup}
-          onChange={(e) => setAgeGroup(e.target.value)}
-          className="w-full cursor-pointer appearance-none rounded-xl border-0 bg-white p-4 shadow-sm outline-none ring-2 ring-transparent focus:ring-primary"
+          onChange={(e) => {
+            setAgeGroup(e.target.value);
+            setFieldErrors((current) => ({ ...current, age_group: undefined }));
+          }}
+          aria-invalid={Boolean(fieldErrors.age_group)}
+          className={`w-full cursor-pointer appearance-none rounded-xl border-0 bg-white p-4 shadow-sm outline-none ring-2 ${
+            fieldErrors.age_group ? "ring-error" : "ring-transparent focus:ring-primary"
+          }`}
         >
           <option disabled value="">
-            Select your age
+            Select your age group
           </option>
           {AGE_GROUPS.map((group) => (
             <option key={group} value={group}>
@@ -100,6 +145,7 @@ export function ProfileForm() {
             </option>
           ))}
         </select>
+        <FieldError message={fieldErrors.age_group} />
       </section>
 
       <section>
@@ -121,15 +167,21 @@ export function ProfileForm() {
                 type="radio"
                 name="gender"
                 value={option}
-                required
                 checked={gender === option}
-                onChange={() => setGender(option)}
+                onChange={() => {
+                  setGender(option);
+                  setFieldErrors((current) => ({
+                    ...current,
+                    gender: undefined,
+                  }));
+                }}
                 className="sr-only"
               />
               <span className="font-medium capitalize">{option}</span>
             </label>
           ))}
         </div>
+        <FieldError message={fieldErrors.gender} />
       </section>
 
       <section>
@@ -139,6 +191,10 @@ export function ProfileForm() {
           </span>
           <h3 className="font-headline text-xl font-semibold">Lifestyle Habits</h3>
         </div>
+        <p className="mb-4 text-sm text-on-surface-variant">
+          Tick any that apply. Leaving all unticked is allowed (means none of
+          these habits).
+        </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {(
             [
@@ -173,15 +229,20 @@ export function ProfileForm() {
             </label>
           ))}
         </div>
+        <FieldError message={fieldErrors.lifestyle} />
       </section>
 
       <section>
-        <div className="mb-4 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <span className="material-symbols-outlined text-primary">
             family_history
           </span>
           <h3 className="font-headline text-xl font-semibold">Family History</h3>
         </div>
+        <p className="mb-4 text-sm text-on-surface-variant">
+          Broad condition categories only. Do not name the relative, and do not
+          provide clinical details about them.
+        </p>
         <div className="flex flex-wrap gap-3">
           {FAMILY_HISTORY_OPTIONS.map((option) => {
             const selected = familyHistory.includes(option);
@@ -193,7 +254,9 @@ export function ProfileForm() {
                 className={`rounded-full border px-6 py-3 text-sm transition active:scale-95 ${
                   selected
                     ? "border-primary bg-primary text-white"
-                    : "border-outline-variant"
+                    : fieldErrors.family_history
+                      ? "border-error"
+                      : "border-outline-variant"
                 }`}
               >
                 {familyLabels[option]}
@@ -201,6 +264,7 @@ export function ProfileForm() {
             );
           })}
         </div>
+        <FieldError message={fieldErrors.family_history} />
       </section>
 
       <section className="rounded-2xl bg-surface-container p-6">
@@ -208,13 +272,20 @@ export function ProfileForm() {
           <span className="material-symbols-outlined text-primary">
             location_on
           </span>
-          <h3 className="font-headline text-xl font-semibold">Location</h3>
+          <h3 className="font-headline text-xl font-semibold">
+            Malaysian State
+          </h3>
         </div>
         <select
-          required
           value={state}
-          onChange={(e) => setState(e.target.value)}
-          className="w-full cursor-pointer appearance-none rounded-xl border-0 bg-white p-4 shadow-sm outline-none ring-2 ring-transparent focus:ring-primary"
+          onChange={(e) => {
+            setState(e.target.value);
+            setFieldErrors((current) => ({ ...current, state: undefined }));
+          }}
+          aria-invalid={Boolean(fieldErrors.state)}
+          className={`w-full cursor-pointer appearance-none rounded-xl border-0 bg-white p-4 shadow-sm outline-none ring-2 ${
+            fieldErrors.state ? "ring-error" : "ring-transparent focus:ring-primary"
+          }`}
         >
           <option disabled value="">
             Select State
@@ -225,18 +296,19 @@ export function ProfileForm() {
             </option>
           ))}
         </select>
+        <FieldError message={fieldErrors.state} />
       </section>
 
-      {error ? (
+      {formError ? (
         <p className="rounded-xl bg-error-container px-4 py-3 text-sm text-on-error-container">
-          {error}
+          {formError}
         </p>
       ) : null}
 
       <div className="sticky bottom-0 -mx-4 border-t border-outline-variant/20 bg-surface-container-lowest p-4 shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)] sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
         <button
           type="submit"
-          disabled={loading || familyHistory.length === 0}
+          disabled={loading}
           className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 font-semibold text-on-primary shadow-lg transition hover:bg-primary-container active:scale-95 disabled:opacity-60"
         >
           {loading ? "Saving..." : "Next: See My Results"}

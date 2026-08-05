@@ -9,7 +9,45 @@ import {
 import { PRIVACY_CONSENT_COOKIE } from "@/lib/privacy-consent";
 import { createClient } from "@/lib/supabase/server";
 import type { HealthReferenceStat } from "@/lib/types";
-import { profileInputSchema } from "@/lib/validation";
+import {
+  fieldErrorsFromZod,
+  findForbiddenProfileKeys,
+  profileInputSchema,
+} from "@/lib/validation";
+
+/**
+ * Ensure profile rows are tied to an anonymous auth user only (AC 1.2.4).
+ * Named/email accounts must not be used as the storage identity for profile data.
+ */
+async function ensureAnonymousUser(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+) {
+  const { data: userData } = await supabase.auth.getUser();
+  let user = userData.user;
+
+  const isNamedAccount = Boolean(user?.email);
+
+  if (user && !isNamedAccount) {
+    return user;
+  }
+
+  if (isNamedAccount) {
+    await supabase.auth.signOut();
+  }
+
+  const { data: anonData, error: anonError } =
+    await supabase.auth.signInAnonymously();
+
+  if (anonError || !anonData?.user) {
+    return {
+      error:
+        anonError?.message ||
+        "Unauthorized. Enable Supabase Auth 'Anonymous sign-ins' to allow guest assessments.",
+    } as const;
+  }
+
+  return anonData.user;
+}
 
 export async function POST(request: Request) {
   try {
@@ -22,39 +60,43 @@ export async function POST(request: Request) {
     }
 
     const supabase = await createClient();
-    const { data: userData } = await supabase.auth.getUser();
-    let user = userData.user;
-
-    if (!user) {
-      // Guest mode: create an anonymous Supabase session so we can write
-      // profiles / risk_results under an auth.uid().
-      const { data: anonData, error: anonError } =
-        await supabase.auth.signInAnonymously();
-
-      if (anonError || !anonData?.user) {
-        return NextResponse.json(
-          {
-            error:
-              anonError?.message ||
-              "Unauthorized. Enable Supabase Auth 'Anonymous sign-ins' to allow guest assessments.",
-          },
-          { status: 401 },
-        );
-      }
-
-      user = anonData.user;
+    const anonOrError = await ensureAnonymousUser(supabase);
+    if ("error" in anonOrError) {
+      return NextResponse.json({ error: anonOrError.error }, { status: 401 });
     }
+    const user = anonOrError;
 
     const body = await request.json();
-    const parsed = profileInputSchema.safeParse(body);
 
-    if (!parsed.success) {
+    const forbidden = findForbiddenProfileKeys(body);
+    if (forbidden.length > 0) {
       return NextResponse.json(
-        { error: parsed.error.issues[0]?.message || "Invalid profile input" },
+        {
+          error: `Identifying or clinical fields are not allowed: ${forbidden.join(", ")}.`,
+          fieldErrors: {
+            form: "This form only accepts non-identifying profile answers.",
+          },
+        },
         { status: 400 },
       );
     }
 
+    const parsed = profileInputSchema.safeParse(body);
+
+    if (!parsed.success) {
+      const fieldErrors = fieldErrorsFromZod(parsed.error);
+      return NextResponse.json(
+        {
+          error:
+            parsed.error.issues[0]?.message ||
+            "Please correct the highlighted fields.",
+          fieldErrors,
+        },
+        { status: 400 },
+      );
+    }
+
+    // AC 1.2.1 / 1.2.4 — persist only the validated minimal fields + anonymous user_id.
     const profile = parsed.data;
 
     const { error: profileError } = await supabase.from("profiles").upsert(

@@ -30,13 +30,22 @@ export default async function ProfilePage() {
           Answer a few non-sensitive questions. We compare them with NHMS
           national statistics using clear rules.
         </p>
-        <p className="mt-3 text-sm text-on-surface-variant">
-          You can{" "}
-          <a href="/privacy" className="font-semibold text-primary hover:underline">
-            withdraw consent
-          </a>{" "}
-          at any time from the privacy notice.
-        </p>
+        <div className="mt-4 rounded-2xl border border-primary/20 bg-primary-container/15 px-4 py-3 text-sm text-on-surface-variant">
+          <p className="font-semibold text-on-surface">
+            Non-identifiable storage
+          </p>
+          <p className="mt-1">
+            Your answers are stored under an anonymous session ID only — not
+            under your name, NRIC, email, or other personal identifiers. You can{" "}
+            <a
+              href="/privacy"
+              className="font-semibold text-primary hover:underline"
+            >
+              withdraw consent
+            </a>{" "}
+            anytime to delete session profile data.
+          </p>
+        </div>
         <div className="mt-8">
           <ProfileForm />
         </div>
