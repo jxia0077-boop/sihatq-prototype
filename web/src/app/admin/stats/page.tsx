@@ -2,10 +2,12 @@ import {
   AdminStatsManager,
   type AdminStatRow,
 } from "@/components/AdminStatsManager";
-import { createServiceClient, hasServiceRoleKey } from "@/lib/admin";
+import { createServiceClient, hasServiceRoleKey, requireAdmin } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminStatsPage() {
+  await requireAdmin();
+
   let rows: AdminStatRow[] = [];
 
   if (hasServiceRoleKey()) {

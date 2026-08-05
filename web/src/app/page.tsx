@@ -21,32 +21,7 @@ export default function HomePage() {
             >
               Home
             </Link>
-            <Link
-              href="/sign-up"
-              className="rounded-full px-4 py-2 text-sm font-medium text-on-surface-variant hover:bg-secondary-container/50"
-            >
-              Assess
-            </Link>
-            <Link
-              href="/login"
-              className="rounded-full px-4 py-2 text-sm font-medium text-on-surface-variant hover:bg-secondary-container/50"
-            >
-              Log in
-            </Link>
-            <Link
-              href="/sign-up"
-              className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-on-primary"
-            >
-              Get started
-            </Link>
           </div>
-          <Link
-            href="/login"
-            className="material-symbols-outlined text-primary md:hidden"
-            aria-label="Log in"
-          >
-            account_circle
-          </Link>
         </nav>
       </header>
 
@@ -74,19 +49,21 @@ export default function HomePage() {
             </p>
 
             <div className="mt-4 flex flex-wrap gap-3">
-              <Link
-                href="/sign-up"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-headline text-lg font-semibold text-on-primary shadow-lg shadow-primary/20 transition hover:bg-primary-container active:scale-95"
-              >
-                Start Free Assessment
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
               <a
                 href="#features"
                 className="rounded-full border-2 border-outline-variant px-8 py-4 font-headline text-lg font-semibold text-on-surface-variant transition hover:bg-surface-container"
               >
                 Learn More
               </a>
+              <Link
+                href="/privacy"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-headline text-lg font-semibold text-on-primary shadow-lg shadow-primary/20 transition hover:bg-primary-container active:scale-95"
+              >
+                Start Assessment
+                <span className="material-symbols-outlined">
+                  arrow_forward
+                </span>
+              </Link>
             </div>
 
             <div className="mt-8 w-full border-t border-outline-variant/30 pt-6">
@@ -219,12 +196,6 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-            <Link
-              href="/sign-up"
-              className="inline-flex rounded-full bg-[#89f5e7] px-10 py-5 font-headline text-lg font-semibold text-[#00201d] shadow-xl transition hover:scale-105"
-            >
-              Start Assessment Now
-            </Link>
           </div>
         </section>
 
@@ -273,11 +244,6 @@ export default function HomePage() {
               <li>
                 <Link href="/privacy" className="hover:text-primary">
                   Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" className="hover:text-primary">
-                  Clinical Standards
                 </Link>
               </li>
               <li>

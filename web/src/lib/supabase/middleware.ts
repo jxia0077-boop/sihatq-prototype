@@ -48,14 +48,29 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/api/ai-chat") ||
     pathname.startsWith("/api/admin");
 
+  // Guest assessment flow: allow visitors to complete assessment
+  // without viewing /login or /sign-up pages.
+  const isAssessmentFlow =
+    pathname.startsWith("/privacy") ||
+    pathname.startsWith("/profile") ||
+    pathname.startsWith("/analyzing") ||
+    pathname.startsWith("/risk-insight") ||
+    pathname.startsWith("/recommendations") ||
+    pathname.startsWith("/result-detail") ||
+    pathname.startsWith("/reminders") ||
+    pathname.startsWith("/api/assess");
+
   const isAuthPage =
     pathname.startsWith("/login") || pathname.startsWith("/sign-up");
 
   if (isProtected && !user) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/login";
-    redirectUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(redirectUrl);
+    // Keep admin/dashboard protected, but allow the guest assessment flow.
+    if (!isAssessmentFlow) {
+      redirectUrl.pathname = "/";
+      return NextResponse.redirect(redirectUrl);
+    }
+    return supabaseResponse;
   }
 
   if (isAuthPage && user) {

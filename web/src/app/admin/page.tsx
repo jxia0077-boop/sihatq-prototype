@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { createServiceClient, hasServiceRoleKey } from "@/lib/admin";
+import {
+  createServiceClient,
+  hasServiceRoleKey,
+  requireAdmin,
+} from "@/lib/admin";
 
 export default async function AdminOverviewPage() {
+  await requireAdmin();
+
   let profileCount = 0;
   let resultCount = 0;
   let statsCount = 0;

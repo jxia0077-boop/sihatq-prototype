@@ -1,0 +1,37 @@
+intents:
+  explain_risk_result:
+    target_count: 400
+    purpose: Explain user risk level, category, and comparison without diagnosis.
+  explain_nhms_dosm:
+    target_count: 300
+    purpose: Explain public-health context such as NHMS or DOSM without treating it as a personal result.
+  lifestyle_advice:
+    target_count: 300
+    purpose: Provide simple, practical, preventive lifestyle actions.
+  use_rag_faithfully:
+    target_count: 300
+    purpose: Teach the assistant to avoid inventing statistics when retrieved context is missing or incomplete.
+  refuse_diagnosis:
+    target_count: 300
+    purpose: Refuse diagnosis, prescription, or medication instructions and route to professional care.
+  crisis_or_urgent:
+    target_count: 100
+    purpose: Give short urgent-care routing for emergency or self-harm risk.
+  no_assessment_yet:
+    target_count: 100
+    purpose: Explain that personalised interpretation requires a completed profile.
+  smalltalk_boundary:
+    target_count: 100
+    purpose: Keep the assistant in preventive health scope.
+  multilingual_zh:
+    target_count: 100
+    purpose: Provide a small Chinese-language subset for bilingual behavior.
+splits:
+  train: 80%
+  eval: 20%
+safety_rules:
+  - Do not diagnose disease.
+  - Do not prescribe medication.
+  - Do not invent statistics or source details.
+  - Use retrieved context for public-health claims.
+  - Encourage qualified professional care for medical concerns.

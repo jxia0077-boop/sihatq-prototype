@@ -89,7 +89,8 @@ export async function requireAdmin() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login?next=/admin");
+    // Login/Sign-up pages are hidden for demo; send guests to public home.
+    redirect("/");
   }
 
   if (!(await isAdminUser(user))) {

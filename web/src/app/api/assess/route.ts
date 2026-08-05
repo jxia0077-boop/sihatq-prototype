@@ -12,12 +12,27 @@ import { profileInputSchema } from "@/lib/validation";
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { data: userData } = await supabase.auth.getUser();
+    let user = userData.user;
 
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      // Guest mode: create an anonymous Supabase session so we can write
+      // profiles / risk_results under an auth.uid().
+      const { data: anonData, error: anonError } =
+        await supabase.auth.signInAnonymously();
+
+      if (anonError || !anonData?.user) {
+        return NextResponse.json(
+          {
+            error:
+              anonError?.message ||
+              "Unauthorized. Enable Supabase Auth 'Anonymous sign-ins' to allow guest assessments.",
+          },
+          { status: 401 },
+        );
+      }
+
+      user = anonData.user;
     }
 
     const body = await request.json();
