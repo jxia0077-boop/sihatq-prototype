@@ -1,9 +1,30 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { PRIVACY_CONSENT_COOKIE } from "@/lib/privacy-consent";
 import { getSupabaseEnv } from "@/lib/supabase/env";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
+
+  const pathname = request.nextUrl.pathname;
+  const consent = request.cookies.get(PRIVACY_CONSENT_COOKIE)?.value;
+  const hasAcceptedConsent = consent === "accepted";
+
+  // AC 1.1.1 / 1.1.2 — block profile entry and assess API until consent.
+  if (
+    (pathname.startsWith("/profile") || pathname.startsWith("/api/assess")) &&
+    !hasAcceptedConsent
+  ) {
+    if (pathname.startsWith("/api/assess")) {
+      return NextResponse.json(
+        { error: "Privacy consent is required before submitting a profile." },
+        { status: 403 },
+      );
+    }
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/privacy";
+    return NextResponse.redirect(redirectUrl);
+  }
 
   const { url, key } = getSupabaseEnv();
 
@@ -32,7 +53,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pathname = request.nextUrl.pathname;
   const isProtected =
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/privacy") ||

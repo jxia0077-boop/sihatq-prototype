@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const items = [
   { href: "/dashboard", icon: "home", label: "Home" },
-  { href: "/profile", icon: "health_and_safety", label: "Assess" },
+  { href: "/privacy", icon: "health_and_safety", label: "Assess" },
   { href: "/risk-insight", icon: "analytics", label: "Insights" },
   { href: "/recommendations", icon: "checklist", label: "Actions" },
 ] as const;
@@ -17,7 +17,12 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 z-50 w-full rounded-t-xl bg-surface-container-lowest shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)]">
       <div className="mx-auto flex max-w-lg items-center justify-around px-4 py-2">
         {items.map((item) => {
-          const active = pathname.startsWith(item.href);
+          const active =
+            item.href === "/privacy"
+              ? pathname.startsWith("/privacy") ||
+                pathname.startsWith("/profile") ||
+                pathname.startsWith("/analyzing")
+              : pathname.startsWith(item.href);
           return (
             <Link
               key={item.href}

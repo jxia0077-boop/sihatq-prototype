@@ -222,7 +222,7 @@ export default function HomePage() {
             <h4 className="mb-4 text-sm font-semibold">Platform</h4>
             <ul className="space-y-2 text-xs text-on-surface-variant">
               <li>
-                <Link href="/profile" className="hover:text-primary">
+                <Link href="/privacy" className="hover:text-primary">
                   Assessment
                 </Link>
               </li>

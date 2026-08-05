@@ -31,10 +31,10 @@ export default async function RiskInsightPage() {
             Complete your profile assessment first.
           </p>
           <Link
-            href="/profile"
+            href="/privacy"
             className="mt-6 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-on-primary"
           >
-            Go to profile
+            Start assessment
           </Link>
         </main>
         <BottomNav />

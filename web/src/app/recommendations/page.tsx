@@ -39,10 +39,10 @@ export default async function RecommendationsPage() {
               No recommendations yet. Complete a profile assessment first.
             </p>
             <Link
-              href="/profile"
+              href="/privacy"
               className="mt-4 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-on-primary"
             >
-              Go to profile
+              Start assessment
             </Link>
           </div>
         ) : (
@@ -89,7 +89,7 @@ export default async function RecommendationsPage() {
             Back to Home
           </Link>
           <Link
-            href="/profile"
+            href="/privacy"
             className="rounded-full border border-outline-variant px-5 py-3 font-semibold text-primary"
           >
             Re-run assessment

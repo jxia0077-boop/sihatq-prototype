@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { assessRisk } from "@/lib/risk-engine";
 import {
@@ -5,12 +6,21 @@ import {
   cacheGet,
   cacheSet,
 } from "@/lib/redis";
+import { PRIVACY_CONSENT_COOKIE } from "@/lib/privacy-consent";
 import { createClient } from "@/lib/supabase/server";
 import type { HealthReferenceStat } from "@/lib/types";
 import { profileInputSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   try {
+    const cookieStore = await cookies();
+    if (cookieStore.get(PRIVACY_CONSENT_COOKIE)?.value !== "accepted") {
+      return NextResponse.json(
+        { error: "Privacy consent is required before submitting a profile." },
+        { status: 403 },
+      );
+    }
+
     const supabase = await createClient();
     const { data: userData } = await supabase.auth.getUser();
     let user = userData.user;
