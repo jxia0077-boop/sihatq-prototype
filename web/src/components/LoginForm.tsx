@@ -7,7 +7,11 @@ import { createClient } from "@/lib/supabase/client";
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || "/dashboard";
+  const rawNext = searchParams.get("next") || "/dashboard";
+  const next =
+    rawNext.startsWith("/") && !rawNext.startsWith("//")
+      ? rawNext
+      : "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +46,10 @@ export function LoginForm() {
   return (
     <form className="space-y-6" onSubmit={onSubmit}>
       <div className="space-y-1">
-        <label className="ml-1 text-sm font-medium text-on-surface-variant" htmlFor="email">
+        <label
+          className="ml-1 text-sm font-medium text-on-surface-variant"
+          htmlFor="email"
+        >
           Email
         </label>
         <div className="relative">
@@ -63,7 +70,10 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-1">
-        <label className="ml-1 text-sm font-medium text-on-surface-variant" htmlFor="password">
+        <label
+          className="ml-1 text-sm font-medium text-on-surface-variant"
+          htmlFor="password"
+        >
           Password
         </label>
         <div className="relative">
@@ -103,10 +113,12 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-headline text-lg text-on-primary shadow-[0_10px_40px_-10px_rgba(0,104,95,0.08)] transition active:scale-95 disabled:opacity-60"
+        className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-headline text-lg text-on-primary shadow-[0_10px_40px_-10px_rgba(0,104,95,0.08)] transition hover:-translate-y-0.5 hover:shadow-[var(--elevation-soft)] active:scale-95 disabled:translate-y-0 disabled:opacity-60"
       >
         <span>{loading ? "Signing in..." : "Log In"}</span>
-        <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+        <span className="material-symbols-outlined text-[20px]">
+          arrow_forward
+        </span>
       </button>
     </form>
   );
