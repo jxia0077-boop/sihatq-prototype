@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
@@ -35,15 +41,13 @@ const SUGGESTIONS = [
 ];
 
 export default function AiAssistantPage() {
+  const reactId = useId();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [liveThinking, setLiveThinking] = useState<ThinkingStep[]>([]);
   const thinkingRef = useRef<ThinkingStep[]>([]);
-  const sessionIdRef = useRef(
-    typeof crypto !== "undefined" && "randomUUID" in crypto
-      ? crypto.randomUUID()
-      : `sess-${Date.now()}`,
-  );
+  const messageIdRef = useRef(0);
+  const sessionIdRef = useRef(`sihatq-ai-${reactId.replace(/:/g, "")}`);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome-1",
@@ -66,6 +70,11 @@ export default function AiAssistantPage() {
       behavior: "smooth",
     });
   }, [messages, loading, liveThinking]);
+
+  function nextMessageId(prefix: string) {
+    messageIdRef.current += 1;
+    return `${prefix}-${messageIdRef.current}`;
+  }
 
   async function runChat(
     message: string,
@@ -110,7 +119,7 @@ export default function AiAssistantPage() {
 
       if (data.kind === "plan") {
         const planMsg: ChatMessage = {
-          id: options?.replaceId || `a-${Date.now()}`,
+          id: options?.replaceId || nextMessageId("a"),
           role: "assistant",
           content: data.reply,
           thinking: data.thinking,
@@ -132,7 +141,7 @@ export default function AiAssistantPage() {
       }
 
       const doneMsg: ChatMessage = {
-        id: options?.replaceId || `a-${Date.now()}`,
+        id: options?.replaceId || nextMessageId("a"),
         role: "assistant",
         content: data.reply,
         thinking: data.thinking,
@@ -151,7 +160,7 @@ export default function AiAssistantPage() {
       });
     } catch (error) {
       const errMsg = {
-        id: `e-${Date.now()}`,
+        id: nextMessageId("e"),
         role: "assistant" as const,
         content:
           error instanceof Error
@@ -184,7 +193,7 @@ export default function AiAssistantPage() {
     setInput("");
     setMessages((current) => [
       ...current,
-      { id: `u-${Date.now()}`, role: "user", content: message },
+      { id: nextMessageId("u"), role: "user", content: message },
     ]);
     await runChat(message);
   }

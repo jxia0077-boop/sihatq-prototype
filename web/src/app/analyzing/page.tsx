@@ -35,8 +35,16 @@ export default function AnalyzingPage() {
     <div className="flex min-h-screen flex-col">
       <AppHeader backHref="/profile" showAccount={false} />
       <main className="mx-auto flex w-full max-w-md flex-grow flex-col items-center justify-center px-6 text-center">
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary-container/30">
-          <span className="material-symbols-outlined animate-pulse text-4xl text-primary">
+        <div className="relative mb-8 flex h-28 w-28 items-center justify-center">
+          <div
+            className="absolute inset-0 rounded-full transition-all duration-300 ease-out"
+            style={{
+              background: `conic-gradient(var(--primary) ${progress * 3.6}deg, var(--surface-container) 0deg)`,
+            }}
+          />
+          <div className="absolute inset-3 rounded-full bg-surface-container-lowest shadow-inner" />
+          <div className="sihatq-progress-ring absolute inset-0 rounded-full border-2 border-transparent border-t-primary/60" />
+          <span className="material-symbols-outlined relative text-4xl text-primary">
             cardiology
           </span>
         </div>
@@ -47,7 +55,7 @@ export default function AnalyzingPage() {
         </p>
         <div className="mt-8 h-3 w-full overflow-hidden rounded-full bg-surface-container">
           <div
-            className="h-full rounded-full bg-primary transition-all duration-200"
+            className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ThinkingStep } from "@/lib/ai/chat-client";
 import { TypewriterText } from "@/components/TypewriterText";
 
@@ -15,12 +15,9 @@ export function ThinkingTrace({
   active?: boolean;
   defaultOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(defaultOpen ?? active);
+  const [manualOpen, setManualOpen] = useState<boolean | null>(null);
+  const open = active || (manualOpen ?? Boolean(defaultOpen));
   const lastIndex = steps.length - 1;
-
-  useEffect(() => {
-    if (active) setOpen(true);
-  }, [active]);
 
   if (steps.length === 0 && !active) return null;
 
@@ -28,7 +25,7 @@ export function ThinkingTrace({
     <div className="mb-2 rounded-xl border border-outline-variant/30 bg-surface-container/50 text-sm">
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => setManualOpen((value) => !(value ?? open))}
         className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-on-surface-variant"
         aria-expanded={open}
       >

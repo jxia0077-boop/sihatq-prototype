@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
+import { brandImages } from "@/lib/brand-images";
 import { createClient } from "@/lib/supabase/server";
 import type { Recommendation } from "@/lib/types";
 
@@ -46,7 +48,7 @@ export default async function RecommendationsPage() {
             </Link>
           </div>
         ) : (
-          <div className="mt-8 space-y-4">
+          <div className="sihatq-stagger mt-8 space-y-4">
             {recommendations.map((item) => (
               <article
                 key={item.title}
@@ -95,6 +97,29 @@ export default async function RecommendationsPage() {
             Re-run assessment
           </Link>
         </div>
+        <section className="sihatq-fade-up mt-8 overflow-hidden rounded-3xl border border-outline-variant/20 bg-surface-container-lowest shadow-[var(--elevation-soft)]">
+          <div className="relative h-40">
+            <Image
+              src={brandImages.lifestyleActions.src}
+              alt={brandImages.lifestyleActions.alt}
+              fill
+              sizes="(min-width: 768px) 768px, 100vw"
+              className="object-cover opacity-80"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(248,249,255,0.96),rgba(248,249,255,0.72),rgba(248,249,255,0.22))]" />
+            <div className="absolute inset-0 flex items-center p-5">
+              <div className="max-w-sm">
+                <p className="font-headline text-xl font-semibold text-primary">
+                  Keep the plan small enough to repeat.
+                </p>
+                <p className="mt-2 text-sm leading-6 text-on-surface-variant">
+                  Choose one screening action and one daily habit before adding
+                  more reminders.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
         <Disclaimer className="mt-8" />
       </main>
       <BottomNav />

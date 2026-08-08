@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import {
   acceptPrivacyConsent,
   declinePrivacyConsent,
@@ -13,6 +13,7 @@ type PrivacyConsentFormProps = {
 
 export function PrivacyConsentForm({ initialStatus }: PrivacyConsentFormProps) {
   const [checked, setChecked] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (initialStatus === "accepted") {
     return (
@@ -41,11 +42,14 @@ export function PrivacyConsentForm({ initialStatus }: PrivacyConsentFormProps) {
 
   return (
     <div className="mt-8 space-y-4">
-      <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-4">
+      <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-4 shadow-sm transition hover:border-primary/35">
         <input
           type="checkbox"
           checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          onChange={(e) => {
+            setChecked(e.target.checked);
+            if (e.target.checked) setError(null);
+          }}
           className="mt-1 h-5 w-5 rounded border-outline text-primary focus:ring-primary"
           // Explicit consent must not be pre-selected (AC 1.1.2).
         />
@@ -55,11 +59,28 @@ export function PrivacyConsentForm({ initialStatus }: PrivacyConsentFormProps) {
         </span>
       </label>
 
-      <form action={acceptPrivacyConsent}>
+      {error ? (
+        <p className="rounded-xl bg-error-container px-4 py-3 text-sm font-medium text-on-error-container">
+          {error}
+        </p>
+      ) : null}
+
+      <form
+        action={acceptPrivacyConsent}
+        onSubmit={(event: FormEvent<HTMLFormElement>) => {
+          if (checked) return;
+          event.preventDefault();
+          setError("Please tick the consent checkbox before continuing.");
+        }}
+      >
         <button
           type="submit"
-          disabled={!checked}
-          className="flex w-full items-center justify-center rounded-full bg-primary py-4 font-semibold text-on-primary transition hover:bg-primary-container disabled:cursor-not-allowed disabled:opacity-50"
+          aria-disabled={!checked}
+          className={`flex w-full items-center justify-center rounded-full py-4 font-semibold transition ${
+            checked
+              ? "bg-primary text-on-primary hover:bg-primary-container"
+              : "border border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-error hover:text-on-error-container"
+          }`}
         >
           I Agree — Continue to Profile
         </button>

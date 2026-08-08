@@ -109,7 +109,7 @@ export function ProfileForm() {
   }
 
   return (
-    <form className="space-y-8" onSubmit={onSubmit} noValidate>
+    <form className="space-y-8 pb-10" onSubmit={onSubmit} noValidate>
       <div className="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest px-4 py-3 text-sm text-on-surface-variant">
         <p className="font-semibold text-on-surface">Minimal data only</p>
         <p className="mt-1">
@@ -155,30 +155,25 @@ export function ProfileForm() {
         </div>
         <div className="grid grid-cols-2 gap-4">
           {GENDERS.map((option) => (
-            <label
+            <button
               key={option}
-              className={`cursor-pointer rounded-2xl border p-5 text-center transition ${
+              type="button"
+              onClick={() => {
+                setGender(option);
+                setFieldErrors((current) => ({
+                  ...current,
+                  gender: undefined,
+                }));
+              }}
+              aria-pressed={gender === option}
+              className={`min-h-16 rounded-2xl border p-5 text-center font-medium capitalize transition active:scale-[0.99] ${
                 gender === option
                   ? "border-primary bg-primary-container/30"
                   : "border-outline-variant/30 bg-surface"
               }`}
             >
-              <input
-                type="radio"
-                name="gender"
-                value={option}
-                checked={gender === option}
-                onChange={() => {
-                  setGender(option);
-                  setFieldErrors((current) => ({
-                    ...current,
-                    gender: undefined,
-                  }));
-                }}
-                className="sr-only"
-              />
-              <span className="font-medium capitalize">{option}</span>
-            </label>
+              {option}
+            </button>
           ))}
         </div>
         <FieldError message={fieldErrors.gender} />
@@ -203,30 +198,32 @@ export function ProfileForm() {
               ["high_sugar", "High Sugar", "icecream"],
             ] as const
           ).map(([key, label, icon]) => (
-            <label
+            <button
               key={key}
-              className={`relative flex cursor-pointer flex-col items-center rounded-2xl border p-6 transition ${
+              type="button"
+              onClick={() =>
+                setLifestyle((current) => ({
+                  ...current,
+                  [key]: !current[key],
+                }))
+              }
+              aria-pressed={lifestyle[key]}
+              className={`flex min-h-36 flex-col items-center justify-center rounded-2xl border p-6 transition active:scale-[0.99] ${
                 lifestyle[key]
                   ? "border-primary bg-primary-container/20"
                   : "border-outline-variant/30 bg-surface"
               }`}
             >
-              <input
-                type="checkbox"
-                checked={lifestyle[key]}
-                onChange={(e) =>
-                  setLifestyle((current) => ({
-                    ...current,
-                    [key]: e.target.checked,
-                  }))
-                }
-                className="absolute right-4 top-4 h-5 w-5 rounded border-outline text-primary focus:ring-primary"
-              />
               <span className="material-symbols-outlined mb-3 text-[40px] text-primary">
                 {icon}
               </span>
               <span className="text-center text-sm font-medium">{label}</span>
-            </label>
+              <span
+                className={`mt-3 h-2 w-2 rounded-full ${
+                  lifestyle[key] ? "bg-primary" : "bg-outline-variant"
+                }`}
+              />
+            </button>
           ))}
         </div>
         <FieldError message={fieldErrors.lifestyle} />
@@ -305,7 +302,7 @@ export function ProfileForm() {
         </p>
       ) : null}
 
-      <div className="sticky bottom-0 -mx-4 border-t border-outline-variant/20 bg-surface-container-lowest p-4 shadow-[0_-4px_20px_0_rgba(0,106,97,0.05)] sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
+      <div>
         <button
           type="submit"
           disabled={loading}
