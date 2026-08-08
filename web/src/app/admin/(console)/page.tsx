@@ -277,9 +277,9 @@ export default async function AdminOverviewPage() {
               "/admin/stats",
             ],
             [
-              "Agent safety",
-              "Inspect traces after testing new prompts or tools.",
-              "/admin/traces",
+              "Agent evaluations",
+              "Run safety, trace, and prompt replay checks before demos.",
+              "/admin/evaluations",
             ],
           ].map(([title, copy, href]) => (
             <Link
