@@ -1,0 +1,509 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SihatQ API",
+    "description": "SihatQ Next.js 全栈接口总览（类似 Spring Swagger）。\n\n**鉴权说明**\n- 多数接口使用浏览器 Cookie 会话（Supabase Auth），不是 Bearer Token。\n- `/api/assess` 需要 Cookie：`sihatq_privacy_consent=accepted`\n- `/api/ai-chat` 与 `/api/admin/*` 需要已登录的 Supabase Auth Cookie\n- Admin 还需邮箱在 `ADMIN_EMAILS`（或 user_roles=admin）\n\n本地：`npm run dev` 后打开 `/api-docs` 查看本页。",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:3000",
+      "description": "Local Next.js"
+    }
+  ],
+  "tags": [
+    { "name": "Assess", "description": "健康评估" },
+    { "name": "AI Chat", "description": "Agent / RAG 对话" },
+    { "name": "Admin Traces", "description": "Agent 可观测性" },
+    { "name": "Admin Stats", "description": "参考统计 CRUD" },
+    { "name": "Admin Users", "description": "角色管理" },
+    { "name": "Admin Evaluations", "description": "就绪度 / smoke 评估" }
+  ],
+  "paths": {
+    "/api/assess": {
+      "post": {
+        "tags": ["Assess"],
+        "summary": "提交最小 profile 并计算风险",
+        "description": "需要 Cookie `sihatq_privacy_consent=accepted`。服务端会确保匿名用户（Anonymous sign-ins）。",
+        "operationId": "postAssess",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "example": "sihatq_privacy_consent=accepted" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProfileInput" },
+              "example": {
+                "age_group": "31-45",
+                "gender": "female",
+                "state": "Selangor",
+                "lifestyle": {
+                  "smoker": false,
+                  "active_exercise": true,
+                  "high_sugar": true
+                },
+                "family_history": ["diabetes"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "评估成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RiskAssessmentResponse" }
+              }
+            }
+          },
+          "400": { "description": "校验失败 / 禁止字段" },
+          "401": { "description": "匿名登录失败" },
+          "403": { "description": "缺少 privacy consent" },
+          "500": { "description": "服务器错误" }
+        }
+      }
+    },
+    "/api/ai-chat": {
+      "post": {
+        "tags": ["AI Chat"],
+        "summary": "AI 助手（Agent / Light RAG）",
+        "description": "需要登录 Cookie。`stream=true` 或 Accept: text/event-stream 时返回 SSE。",
+        "operationId": "postAiChat",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "description": "Supabase auth cookies" }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "text/event-stream"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AiChatRequest" },
+              "examples": {
+                "json": {
+                  "summary": "非流式",
+                  "value": {
+                    "message": "What screening should I consider?",
+                    "stream": false,
+                    "mode": "agent",
+                    "sessionId": "docs-session-1"
+                  }
+                },
+                "stream": {
+                  "summary": "流式",
+                  "value": {
+                    "message": "Why might diabetes risk be higher?",
+                    "stream": true,
+                    "mode": "agent",
+                    "sessionId": "docs-session-1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON 或 SSE",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AiChatResponse" }
+              },
+              "text/event-stream": {
+                "schema": { "type": "string" }
+              }
+            }
+          },
+          "400": { "description": "Body 校验失败" },
+          "401": { "description": "未登录" },
+          "500": { "description": "AI 不可用" }
+        }
+      }
+    },
+    "/api/admin/traces": {
+      "get": {
+        "tags": ["Admin Traces"],
+        "summary": "列出 Agent traces",
+        "operationId": "listTraces",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 40 }
+          },
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "traces": { "type": "array", "items": { "type": "object" } },
+                    "source": { "type": "string" },
+                    "note": { "type": "string", "nullable": true }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "description": "非管理员" }
+        }
+      }
+    },
+    "/api/admin/traces/{id}": {
+      "get": {
+        "tags": ["Admin Traces"],
+        "summary": "Trace 详情",
+        "operationId": "getTrace",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "403": { "description": "非管理员" },
+          "404": { "description": "未找到" }
+        }
+      }
+    },
+    "/api/admin/traces/{id}/replay": {
+      "post": {
+        "tags": ["Admin Traces"],
+        "summary": "按 prompt 版本重放某条 Trace",
+        "operationId": "replayTrace",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "promptVersion": { "type": "string" },
+                  "mode": {
+                    "type": "string",
+                    "enum": ["agent", "react", "legacy", "plan", "multi"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "重放结果" },
+          "403": { "description": "非管理员" },
+          "404": { "description": "Trace 不存在" }
+        }
+      }
+    },
+    "/api/admin/stats": {
+      "post": {
+        "tags": ["Admin Stats"],
+        "summary": "新增参考统计行",
+        "operationId": "createStat",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/HealthStatInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "创建成功" },
+          "400": { "description": "无效 payload" },
+          "403": { "description": "非管理员" },
+          "503": { "description": "缺少 SERVICE_ROLE_KEY" }
+        }
+      },
+      "patch": {
+        "tags": ["Admin Stats"],
+        "summary": "更新参考统计行",
+        "operationId": "updateStat",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HealthStatInput" },
+                  {
+                    "type": "object",
+                    "required": ["id"],
+                    "properties": { "id": { "type": "string", "format": "uuid" } }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "更新成功" },
+          "400": { "description": "无效 payload" },
+          "403": { "description": "非管理员" },
+          "503": { "description": "缺少 SERVICE_ROLE_KEY" }
+        }
+      },
+      "delete": {
+        "tags": ["Admin Stats"],
+        "summary": "删除参考统计行",
+        "operationId": "deleteStat",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "{ ok: true }" },
+          "400": { "description": "缺少 id / 删除失败" },
+          "403": { "description": "非管理员" },
+          "503": { "description": "缺少 SERVICE_ROLE_KEY" }
+        }
+      }
+    },
+    "/api/admin/users/role": {
+      "post": {
+        "tags": ["Admin Users"],
+        "summary": "设置用户角色 admin/user",
+        "operationId": "setUserRole",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["userId", "role"],
+                "properties": {
+                  "userId": { "type": "string", "format": "uuid" },
+                  "role": { "type": "string", "enum": ["admin", "user"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "角色已更新" },
+          "400": { "description": "无效 / 不能移除自己的 admin" },
+          "403": { "description": "非管理员" },
+          "503": { "description": "缺少 SERVICE_ROLE_KEY" }
+        }
+      }
+    },
+    "/api/admin/evaluations": {
+      "get": {
+        "tags": ["Admin Evaluations"],
+        "summary": "静态就绪度评估（基于已有 traces）",
+        "operationId": "getEvaluations",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "summary + results" },
+          "403": { "description": "非管理员" }
+        }
+      },
+      "post": {
+        "tags": ["Admin Evaluations"],
+        "summary": "跑 smoke 评估 + 静态评估",
+        "operationId": "runEvaluations",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "summary + results" },
+          "403": { "description": "非管理员" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProfileInput": {
+        "type": "object",
+        "required": ["age_group", "gender", "state", "lifestyle", "family_history"],
+        "properties": {
+          "age_group": {
+            "type": "string",
+            "enum": ["18-30", "31-45", "46-60", "60+"]
+          },
+          "gender": { "type": "string", "enum": ["male", "female"] },
+          "state": { "type": "string", "example": "Selangor" },
+          "lifestyle": {
+            "type": "object",
+            "required": ["smoker", "active_exercise", "high_sugar"],
+            "properties": {
+              "smoker": { "type": "boolean" },
+              "active_exercise": { "type": "boolean" },
+              "high_sugar": { "type": "boolean" }
+            }
+          },
+          "family_history": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["diabetes", "heart_disease", "hypertension", "none"]
+            }
+          }
+        }
+      },
+      "RiskAssessmentResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "risk_category": { "type": "string" },
+          "risk_level": { "type": "string" },
+          "explanation": { "type": "string" },
+          "comparison_text": { "type": "string" },
+          "your_score": { "type": "number" },
+          "national_benchmark": { "type": "number" },
+          "recommendations": { "type": "array", "items": { "type": "object" } }
+        }
+      },
+      "AiChatRequest": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": { "type": "string", "minLength": 2, "maxLength": 1000 },
+          "stream": { "type": "boolean" },
+          "mode": {
+            "type": "string",
+            "enum": ["agent", "react", "legacy", "plan", "multi"]
+          },
+          "planDecision": { "type": "string", "enum": ["approve", "decline"] },
+          "approvedPlan": { "type": "object" },
+          "sessionId": { "type": "string", "maxLength": 80 },
+          "history": {
+            "type": "array",
+            "maxItems": 40,
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": { "type": "string", "enum": ["user", "assistant"] },
+                "content": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "AiChatResponse": {
+        "type": "object",
+        "properties": {
+          "reply": { "type": "string" },
+          "sources": { "type": "array", "items": { "type": "object" } },
+          "mode": { "type": "string" },
+          "retrieval": { "type": "string" },
+          "thinking": { "type": "array", "items": { "type": "object" } },
+          "awaiting_plan": { "type": "boolean" },
+          "plan": { "type": "object", "nullable": true },
+          "trace_id": { "type": "string", "nullable": true }
+        }
+      },
+      "HealthStatInput": {
+        "type": "object",
+        "required": ["indicator", "year", "value", "source_title"],
+        "properties": {
+          "indicator": { "type": "string" },
+          "year": { "type": "integer" },
+          "value": { "type": "number" },
+          "unit": { "type": "string", "default": "percent" },
+          "source_title": { "type": "string" },
+          "source_url": { "type": "string", "nullable": true },
+          "state": { "type": "string", "nullable": true },
+          "age_group": { "type": "string", "nullable": true },
+          "gender": { "type": "string", "nullable": true }
+        }
+      }
+    }
+  }
+}
