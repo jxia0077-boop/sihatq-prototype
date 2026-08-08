@@ -2,13 +2,10 @@ import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { getAdminEmails } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminForbiddenPage() {
-  notFound();
-
   const supabase = await createClient();
   const {
     data: { user },

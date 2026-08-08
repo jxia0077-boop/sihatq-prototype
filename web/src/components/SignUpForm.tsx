@@ -11,11 +11,13 @@ export function SignUpForm() {
   const [password, setPassword] = useState("");
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
     setError(null);
+    setMessage(null);
 
     if (!accepted) {
       setError("Please accept the terms to continue.");
@@ -39,7 +41,7 @@ export function SignUpForm() {
       }
 
       if (!data.session) {
-        setError(
+        setMessage(
           "Account created. If email confirmation is enabled in Supabase, check your inbox, then log in.",
         );
         return;
@@ -59,7 +61,10 @@ export function SignUpForm() {
   return (
     <form className="space-y-5" onSubmit={onSubmit}>
       <div className="space-y-1">
-        <label className="ml-1 text-sm font-medium text-on-surface-variant" htmlFor="fullName">
+        <label
+          className="ml-1 text-sm font-medium text-on-surface-variant"
+          htmlFor="fullName"
+        >
           Full name
         </label>
         <input
@@ -73,7 +78,10 @@ export function SignUpForm() {
       </div>
 
       <div className="space-y-1">
-        <label className="ml-1 text-sm font-medium text-on-surface-variant" htmlFor="email">
+        <label
+          className="ml-1 text-sm font-medium text-on-surface-variant"
+          htmlFor="email"
+        >
           Email
         </label>
         <input
@@ -89,7 +97,10 @@ export function SignUpForm() {
       </div>
 
       <div className="space-y-1">
-        <label className="ml-1 text-sm font-medium text-on-surface-variant" htmlFor="password">
+        <label
+          className="ml-1 text-sm font-medium text-on-surface-variant"
+          htmlFor="password"
+        >
           Password
         </label>
         <input
@@ -105,7 +116,7 @@ export function SignUpForm() {
         />
       </div>
 
-      <label className="flex items-start gap-3 text-sm text-on-surface-variant">
+      <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-outline-variant/24 bg-surface-container-lowest px-4 py-3 text-sm leading-6 text-on-surface-variant transition hover:border-primary/35">
         <input
           type="checkbox"
           checked={accepted}
@@ -123,11 +134,16 @@ export function SignUpForm() {
           {error}
         </p>
       ) : null}
+      {message ? (
+        <p className="rounded-xl bg-primary/10 px-4 py-3 text-sm text-primary">
+          {message}
+        </p>
+      ) : null}
 
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-headline text-lg text-on-primary transition active:scale-95 disabled:opacity-60"
+        className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-headline text-lg text-on-primary transition hover:-translate-y-0.5 hover:shadow-[var(--elevation-soft)] active:scale-95 disabled:translate-y-0 disabled:opacity-60"
       >
         {loading ? "Creating account..." : "Create account"}
       </button>

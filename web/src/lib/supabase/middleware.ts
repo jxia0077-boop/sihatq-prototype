@@ -84,10 +84,18 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/login") || pathname.startsWith("/sign-up");
 
   if (isProtected && !user) {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const redirectUrl = request.nextUrl.clone();
     // Keep admin/dashboard protected, but allow the guest assessment flow.
     if (!isAssessmentFlow) {
-      redirectUrl.pathname = "/";
+      redirectUrl.pathname = "/login";
+      redirectUrl.searchParams.set(
+        "next",
+        `${request.nextUrl.pathname}${request.nextUrl.search}`,
+      );
       return NextResponse.redirect(redirectUrl);
     }
     return supabaseResponse;

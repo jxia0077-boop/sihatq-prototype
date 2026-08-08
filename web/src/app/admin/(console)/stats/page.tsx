@@ -5,6 +5,8 @@ import {
 import { createServiceClient, hasServiceRoleKey, requireAdmin } from "@/lib/admin";
 import { createClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminStatsPage() {
   await requireAdmin();
 
