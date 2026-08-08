@@ -5,6 +5,7 @@ import { AnimatedMeter, AnimatedNumber } from "@/components/AnimatedMetric";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
 import { DosmMortalityCard } from "@/components/DosmMortalityCard";
+import { EvidenceReportSection } from "@/components/EvidenceReportSection";
 import { brandImages } from "@/lib/brand-images";
 import { createClient } from "@/lib/supabase/server";
 import type { Recommendation } from "@/lib/types";
@@ -199,6 +200,13 @@ export default async function ResultDetailPage() {
             <p className="mt-4 text-sm text-primary">{result.comparison_text}</p>
           </div>
         </div>
+
+        <EvidenceReportSection
+          riskCategory={result.risk_category}
+          comparisonText={result.comparison_text}
+          yourScore={yourScore}
+          nationalBenchmark={national}
+        />
 
         <h3 className="mb-4 font-headline text-xl font-semibold">
           Metric breakdown

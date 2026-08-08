@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { TraceReplayPanel } from "@/components/TraceReplayPanel";
+import { PROMPT_VERSIONS } from "@/lib/agent/evaluation";
 import { requireAdmin } from "@/lib/admin";
 import { getTrace } from "@/lib/agent/observability/store";
 
@@ -59,6 +61,11 @@ export default async function AdminTraceDetailPage({
           </div>
         ) : null}
       </dl>
+
+      <TraceReplayPanel
+        traceId={trace.id}
+        versions={[...PROMPT_VERSIONS]}
+      />
 
       <h3 className="mt-8 font-headline text-lg font-semibold">Steps</h3>
       <ol className="mt-3 space-y-2">
