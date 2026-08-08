@@ -45,10 +45,11 @@ export default async function AdminOverviewPage() {
     }
   }
 
-  const cards = [
+  const cards: { label: string; value: string | number; href: string }[] = [
     { label: "Profiles", value: profileCount, href: "/admin/assessments" },
     { label: "Assessments", value: resultCount, href: "/admin/assessments" },
     { label: "Reference stats", value: statsCount, href: "/admin/stats" },
+    { label: "Agent traces", value: "View", href: "/admin/traces" },
   ];
 
   return (

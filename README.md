@@ -31,6 +31,19 @@ npm run dev
 
 Then open http://localhost:3000
 
+## AI development workflow (optional)
+
+Parallel **coding agents** (not the health chatbot) can use Git Worktrees:
+
+👉 **[`devtools/multi-agent-worktree/`](devtools/multi-agent-worktree/)**
+
+```bash
+bash devtools/multi-agent-worktree/scripts/worktree-setup.sh
+bash devtools/multi-agent-worktree/scripts/worktree-status.sh
+```
+
+Product runtime multi-agent still uses **Result Object** isolation inside `web/src/lib/agent/multi-agent/`.
+
 ## Static prototype (old)
 
 ```bash

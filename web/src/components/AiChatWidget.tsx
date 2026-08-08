@@ -3,12 +3,16 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { PlanCard } from "@/components/PlanCard";
 import {
   ThinkingTrace,
   type ThinkingStep,
 } from "@/components/ThinkingTrace";
 import { TypewriterText } from "@/components/TypewriterText";
-import { streamAiChat } from "@/lib/ai/chat-client";
+import {
+  streamAiChat,
+  type AgentPlan,
+} from "@/lib/ai/chat-client";
 
 type ChatMessage = {
   id: string;
@@ -16,6 +20,9 @@ type ChatMessage = {
   content: string;
   thinking?: ThinkingStep[];
   animate?: boolean;
+  plan?: AgentPlan;
+  planQuestion?: string;
+  planResolved?: boolean;
 };
 
 const SUGGESTIONS = [
@@ -44,6 +51,11 @@ export function AiChatWidget() {
   const [loading, setLoading] = useState(false);
   const [liveThinking, setLiveThinking] = useState<ThinkingStep[]>([]);
   const thinkingRef = useRef<ThinkingStep[]>([]);
+  const sessionIdRef = useRef(
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `sess-${Date.now()}`,
+  );
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome-1",
@@ -72,6 +84,117 @@ export function AiChatWidget() {
 
   if (hidden) return null;
 
+  async function runChat(
+    message: string,
+    options?: {
+      planDecision?: "approve" | "decline";
+      approvedPlan?: AgentPlan;
+      replaceId?: string;
+    },
+  ) {
+    setLoading(true);
+    setLiveThinking([]);
+    thinkingRef.current = [];
+
+    const history = messages
+      .filter(
+        (m) =>
+          (m.role === "user" || m.role === "assistant") &&
+          !m.id.startsWith("welcome") &&
+          m.id !== options?.replaceId &&
+          m.content.trim().length > 0,
+      )
+      .slice(-20)
+      .map((m) => ({
+        role: m.role,
+        content: m.content.slice(0, 1500),
+      }));
+
+    try {
+      const data = await streamAiChat(
+        message,
+        (steps) => {
+          thinkingRef.current = steps;
+          setLiveThinking(steps);
+        },
+        {
+          planDecision: options?.planDecision,
+          approvedPlan: options?.approvedPlan,
+          history,
+          sessionId: sessionIdRef.current,
+        },
+      );
+
+      if (data.kind === "plan") {
+        const planMsg: ChatMessage = {
+          id: options?.replaceId || `a-${Date.now()}`,
+          role: "assistant",
+          content: data.reply,
+          thinking: data.thinking,
+          plan: data.plan,
+          planQuestion: message,
+          animate: !options?.replaceId,
+        };
+        setMessages((current) => {
+          if (options?.replaceId) {
+            return current.map((item) =>
+              item.id === options.replaceId
+                ? { ...planMsg, animate: false, planResolved: false }
+                : item,
+            );
+          }
+          return [...current, planMsg];
+        });
+        return;
+      }
+
+      const doneMsg: ChatMessage = {
+        id: options?.replaceId || `a-${Date.now()}`,
+        role: "assistant",
+        content: data.reply,
+        thinking: data.thinking,
+        animate: true,
+        planResolved: true,
+      };
+
+      setMessages((current) => {
+        if (options?.replaceId) {
+          return current.map((item) =>
+            item.id === options.replaceId
+              ? { ...doneMsg, plan: undefined, planQuestion: undefined }
+              : item,
+          );
+        }
+        return [...current, doneMsg];
+      });
+    } catch (error) {
+      const errMsg = {
+        id: `e-${Date.now()}`,
+        role: "assistant" as const,
+        content:
+          error instanceof Error
+            ? error.message
+            : "Sorry, I could not answer right now.",
+        thinking:
+          thinkingRef.current.length > 0 ? thinkingRef.current : undefined,
+      };
+      setMessages((current) => {
+        if (options?.replaceId) {
+          return current.map((item) =>
+            item.id === options.replaceId
+              ? { ...errMsg, planResolved: true, plan: undefined }
+              : item,
+          );
+        }
+        return [...current, errMsg];
+      });
+    } finally {
+      setLoading(false);
+      setLiveThinking([]);
+      thinkingRef.current = [];
+    }
+  }
+
   async function sendMessage(text: string) {
     const message = text.trim();
     if (!message || loading) return;
@@ -81,46 +204,34 @@ export function AiChatWidget() {
       ...current,
       { id: `u-${Date.now()}`, role: "user", content: message },
     ]);
-    setLoading(true);
-    setLiveThinking([]);
-    thinkingRef.current = [];
+    await runChat(message);
+  }
 
-    try {
-      const data = await streamAiChat(message, (steps) => {
-        thinkingRef.current = steps;
-        setLiveThinking(steps);
-      });
-      setMessages((current) => [
-        ...current,
-        {
-          id: `a-${Date.now()}`,
-          role: "assistant",
-          content: data.reply,
-          thinking: data.thinking,
-          animate: true,
-        },
-      ]);
-    } catch (error) {
-      setMessages((current) => [
-        ...current,
-        {
-          id: `e-${Date.now()}`,
-          role: "assistant",
-          content:
-            error instanceof Error
-              ? error.message
-              : "Sorry, I could not answer right now.",
-          thinking:
-            thinkingRef.current.length > 0
-              ? thinkingRef.current
-              : undefined,
-        },
-      ]);
-    } finally {
-      setLoading(false);
-      setLiveThinking([]);
-      thinkingRef.current = [];
-    }
+  async function onApprovePlan(msg: ChatMessage) {
+    if (!msg.plan || !msg.planQuestion || loading) return;
+    setMessages((current) =>
+      current.map((item) =>
+        item.id === msg.id ? { ...item, planResolved: true } : item,
+      ),
+    );
+    await runChat(msg.planQuestion, {
+      planDecision: "approve",
+      approvedPlan: msg.plan,
+      replaceId: msg.id,
+    });
+  }
+
+  async function onDeclinePlan(msg: ChatMessage) {
+    if (!msg.planQuestion || loading) return;
+    setMessages((current) =>
+      current.map((item) =>
+        item.id === msg.id ? { ...item, planResolved: true } : item,
+      ),
+    );
+    await runChat(msg.planQuestion, {
+      planDecision: "decline",
+      replaceId: msg.id,
+    });
   }
 
   function onSubmit(event: FormEvent) {
@@ -202,6 +313,16 @@ export function AiChatWidget() {
                     message.content
                   )}
                 </p>
+                {message.role === "assistant" &&
+                message.plan &&
+                !message.planResolved ? (
+                  <PlanCard
+                    plan={message.plan}
+                    busy={loading}
+                    onApprove={() => void onApprovePlan(message)}
+                    onDecline={() => void onDeclinePlan(message)}
+                  />
+                ) : null}
               </div>
             ))}
 

@@ -1,0 +1,63 @@
+{
+  "name": "sihatq-dev-multi-agent",
+  "description": "Git Worktree multi-agent development workflow (NOT product runtime).",
+  "baseBranch": "main",
+  "worktreeParent": "..",
+  "agents": [
+    {
+      "id": "rag",
+      "title": "RAG Agent",
+      "branch": "agent/rag",
+      "worktree": "../sihatq-wt-rag",
+      "focus": "Retrieval, pgvector, knowledge seeding, reference stats tooling",
+      "allowPaths": [
+        "web/src/lib/ai/",
+        "web/src/lib/agent/tools/",
+        "web/scripts/seed-",
+        "web/supabase/migrations/00",
+        "web/db/"
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Safety Agent",
+      "branch": "agent/safety",
+      "worktree": "../sihatq-wt-safety",
+      "focus": "Safety gate, medical rules, permissions, eval cases",
+      "allowPaths": [
+        "web/src/lib/agent/safety/",
+        "web/scripts/test-agent-",
+        "web/skills/"
+      ]
+    },
+    {
+      "id": "ui",
+      "title": "UI Agent",
+      "branch": "agent/ui",
+      "worktree": "../sihatq-wt-ui",
+      "focus": "Chatbot widget, PlanCard, admin traces UI",
+      "allowPaths": [
+        "web/src/components/",
+        "web/src/app/ai-assistant/",
+        "web/src/app/admin/",
+        "web/src/app/api/admin/traces/",
+        "web/src/lib/ai/chat-client.ts",
+        "web/src/app/healthpath.css"
+      ]
+    },
+    {
+      "id": "bench",
+      "title": "Benchmark Agent",
+      "branch": "agent/bench",
+      "worktree": "../sihatq-wt-bench",
+      "focus": "Benchmarks, smoke tests, metric scripts, README metrics",
+      "allowPaths": [
+        "web/scripts/bench-",
+        "web/scripts/test-agent-",
+        "web/scripts/ask-agent-",
+        "web/README.md",
+        "devtools/"
+      ]
+    }
+  ]
+}

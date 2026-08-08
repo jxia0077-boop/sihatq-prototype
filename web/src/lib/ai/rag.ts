@@ -52,6 +52,50 @@ function buildFallbackAnswer(
   return lines.join("\n\n");
 }
 
+/**
+ * Local fine-tuned model via Ollama (OpenAI-compatible API).
+ * Start with: ollama serve && ollama run <model>
+ * Env: OLLAMA_MODEL=sihatq-qwen2.5-7b-ft
+ * Optional: OLLAMA_BASE_URL=http://127.0.0.1:11434
+ */
+async function callOllama(prompt: string): Promise<string | null> {
+  const model = process.env.OLLAMA_MODEL;
+  if (!model) return null;
+
+  const baseUrl = (
+    process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434"
+  ).replace(/\/$/, "");
+
+  try {
+    const response = await fetch(`${baseUrl}/v1/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Ollama ignores the key locally; some proxies still expect a header
+        Authorization: `Bearer ${process.env.OLLAMA_API_KEY || "ollama"}`,
+      },
+      body: JSON.stringify({
+        model,
+        temperature: 0.3,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: prompt },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Ollama error", response.status, await response.text());
+      return null;
+    }
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content?.trim() || null;
+  } catch (error) {
+    console.error("Ollama fetch failed", error);
+    return null;
+  }
+}
+
 async function callOpenAI(prompt: string): Promise<string | null> {
   const key = process.env.OPENAI_API_KEY;
   if (!key) return null;
@@ -266,8 +310,9 @@ export async function answerWithLightRag(
     label: "Drafting a clear answer for you…",
   });
 
-  // Prefer Gemini for now (switch order later if using Doubao)
+  // Prefer local fine-tuned Ollama model when configured, then cloud APIs
   const llm =
+    (await callOllama(context)) ||
     (await callGemini(context)) ||
     (await callDoubao(context)) ||
     (await callGroq(context)) ||

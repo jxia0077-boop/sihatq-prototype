@@ -5,6 +5,7 @@ const NAV = [
   { href: "/admin/users", label: "Users", icon: "group" },
   { href: "/admin/stats", label: "Reference stats", icon: "database" },
   { href: "/admin/assessments", label: "Assessments", icon: "analytics" },
+  { href: "/admin/traces", label: "Agent traces", icon: "timeline" },
 ];
 
 export function AdminShell({

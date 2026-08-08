@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "sihatq-personal": {
+      "transport": "in-process",
+      "description": "Read-only personal assessment tools"
+    },
+    "sihatq-knowledge": {
+      "transport": "in-process",
+      "description": "Hybrid knowledge retrieve"
+    },
+    "sihatq-stats": {
+      "transport": "in-process",
+      "description": "Public reference stats lookup"
+    }
+  },
+  "notes": "P3 uses in-process MCP-style registry under src/lib/agent/mcp. Remote MCP SDK servers can be added later with the same register→discover→full-schema interface."
+}
