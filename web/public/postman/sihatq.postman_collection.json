@@ -1,0 +1,290 @@
+{
+  "info": {
+    "_postman_id": "4c9bb31a-55e1-4d5b-a9d9-sihatq-api",
+    "name": "SihatQ API",
+    "description": "Local API collection for SihatQ. Most protected routes use Supabase auth cookies copied from the browser Network tab.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "cookie",
+      "value": "<PASTE_BROWSER_COOKIE_HERE>"
+    },
+    {
+      "key": "trace_id",
+      "value": "<TRACE_ID>"
+    },
+    {
+      "key": "stat_id",
+      "value": "<STAT_ID>"
+    },
+    {
+      "key": "user_id",
+      "value": "<USER_ID>"
+    }
+  ],
+  "item": [
+    {
+      "name": "Docs",
+      "item": [
+        {
+          "name": "OpenAPI JSON",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/openapi.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assessment",
+      "item": [
+        {
+          "name": "Submit Profile Assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "sihatq_privacy_consent=accepted; {{cookie}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age_group\": \"31-45\",\n  \"gender\": \"female\",\n  \"state\": \"Selangor\",\n  \"lifestyle\": {\n    \"smoker\": false,\n    \"active_exercise\": true,\n    \"high_sugar\": true\n  },\n  \"family_history\": [\"diabetes\"]\n}"
+            },
+            "url": "{{base_url}}/api/assess"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Chat",
+      "item": [
+        {
+          "name": "Chat Non-stream",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Compare my risk with Malaysian NHMS data and suggest next steps.\",\n  \"stream\": false,\n  \"mode\": \"multi\",\n  \"sessionId\": \"postman-session-1\"\n}"
+            },
+            "url": "{{base_url}}/api/ai-chat"
+          }
+        },
+        {
+          "name": "Chat SSE Stream",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Why might diabetes risk be higher in my profile?\",\n  \"stream\": true,\n  \"mode\": \"agent\",\n  \"sessionId\": \"postman-session-1\"\n}"
+            },
+            "url": "{{base_url}}/api/ai-chat"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Evaluations",
+      "item": [
+        {
+          "name": "Get Evaluation Readiness",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/evaluations"
+          }
+        },
+        {
+          "name": "Run Smoke Evaluation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/evaluations"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Traces",
+      "item": [
+        {
+          "name": "List Traces",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/traces?limit=40"
+          }
+        },
+        {
+          "name": "Get Trace Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/traces/{{trace_id}}"
+          }
+        },
+        {
+          "name": "Replay Trace",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"promptVersion\": \"sihatq-agent-v2-evidence\",\n  \"mode\": \"multi\"\n}"
+            },
+            "url": "{{base_url}}/api/admin/traces/{{trace_id}}/replay"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Reference Stats",
+      "item": [
+        {
+          "name": "Create Stat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"indicator\": \"diabetes\",\n  \"year\": 2025,\n  \"value\": 18.3,\n  \"unit\": \"percent\",\n  \"source_title\": \"Demo source\",\n  \"source_url\": \"https://example.com\",\n  \"state\": null,\n  \"age_group\": null,\n  \"gender\": null\n}"
+            },
+            "url": "{{base_url}}/api/admin/stats"
+          }
+        },
+        {
+          "name": "Update Stat",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{stat_id}}\",\n  \"indicator\": \"diabetes\",\n  \"year\": 2025,\n  \"value\": 18.3,\n  \"unit\": \"percent\",\n  \"source_title\": \"Demo source updated\",\n  \"source_url\": \"https://example.com\",\n  \"state\": null,\n  \"age_group\": null,\n  \"gender\": null\n}"
+            },
+            "url": "{{base_url}}/api/admin/stats"
+          }
+        },
+        {
+          "name": "Delete Stat",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/stats?id={{stat_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Users",
+      "item": [
+        {
+          "name": "Set User Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "{{cookie}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": "{{base_url}}/api/admin/users/role"
+          }
+        }
+      ]
+    }
+  ]
+}
