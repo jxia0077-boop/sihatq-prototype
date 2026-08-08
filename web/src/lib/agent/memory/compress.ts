@@ -133,7 +133,7 @@ function aggressiveTrim(
   otherUnits: MessageUnit[],
   trigger: number,
 ): { messages: ChatMessage[]; compressed: boolean; summary?: string } {
-  let working = [...otherUnits];
+  const working = [...otherUnits];
   const droppedTools: string[] = [];
   while (working.length > 1) {
     const candidate = [

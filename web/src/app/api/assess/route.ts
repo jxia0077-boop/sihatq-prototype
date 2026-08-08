@@ -23,7 +23,7 @@ async function ensureAnonymousUser(
   supabase: Awaited<ReturnType<typeof createClient>>,
 ) {
   const { data: userData } = await supabase.auth.getUser();
-  let user = userData.user;
+  const user = userData.user;
 
   const isNamedAccount = Boolean(user?.email);
 

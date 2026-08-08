@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
+import { brandImages } from "@/lib/brand-images";
 
 type ReminderKey = "steps" | "water" | "screening";
 
@@ -205,7 +207,16 @@ export default function RemindersPage() {
           </div>
         </article>
 
-        <div className="flex items-center gap-4 rounded-2xl bg-primary/5 p-5">
+        <div className="flex items-center gap-4 rounded-3xl border border-primary/12 bg-primary/5 p-5 shadow-sm">
+          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-4 border-white shadow-[0_10px_24px_rgba(0,80,73,0.14)]">
+            <Image
+              src={brandImages.nursePortrait.src}
+              alt={brandImages.nursePortrait.alt}
+              fill
+              sizes="64px"
+              className="object-cover object-top"
+            />
+          </div>
           <div>
             <h4 className="font-headline font-semibold text-primary">
               You&apos;re doing great!

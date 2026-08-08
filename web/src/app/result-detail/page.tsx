@@ -1,8 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import { AppHeader } from "@/components/AppHeader";
+import { AnimatedMeter, AnimatedNumber } from "@/components/AnimatedMetric";
 import { BottomNav } from "@/components/BottomNav";
 import { Disclaimer } from "@/components/Disclaimer";
 import { DosmMortalityCard } from "@/components/DosmMortalityCard";
+import { brandImages } from "@/lib/brand-images";
 import { createClient } from "@/lib/supabase/server";
 import type { Recommendation } from "@/lib/types";
 
@@ -143,9 +146,11 @@ export default async function ResultDetailPage() {
                   }}
                 />
                 <div className="absolute inset-3 flex flex-col items-center justify-center rounded-full bg-white">
-                  <span className="font-headline text-4xl font-bold">
-                    {wellnessScore}
-                  </span>
+                  <AnimatedNumber
+                    value={wellnessScore}
+                    suffix=""
+                    className="font-headline text-4xl font-bold"
+                  />
                   <span className="text-xs uppercase text-on-surface-variant">
                     Wellness
                   </span>
@@ -178,22 +183,17 @@ export default async function ResultDetailPage() {
                   <span>Your risk score</span>
                   <span className="font-semibold">{yourScore}</span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-on-surface/10">
-                  <div
-                    className="h-full rounded-full bg-primary"
-                    style={{ width: `${yourScore}%` }}
-                  />
-                </div>
+                <AnimatedMeter value={yourScore} heightClass="h-1.5" />
                 <div className="flex justify-between text-sm">
                   <span>NHMS reference</span>
                   <span className="font-semibold">{national}</span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-on-surface/10">
-                  <div
-                    className="h-full rounded-full bg-[#005049]"
-                    style={{ width: `${national}%` }}
-                  />
-                </div>
+                <AnimatedMeter
+                  value={national}
+                  tone="secondary"
+                  delayMs={120}
+                  heightClass="h-1.5"
+                />
               </div>
             </div>
             <p className="mt-4 text-sm text-primary">{result.comparison_text}</p>
@@ -203,8 +203,8 @@ export default async function ResultDetailPage() {
         <h3 className="mb-4 font-headline text-xl font-semibold">
           Metric breakdown
         </h3>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {metrics.map((metric) => (
+        <div className="sihatq-stagger grid grid-cols-1 gap-4 md:grid-cols-2">
+          {metrics.map((metric, index) => (
             <article
               key={metric.title}
               className="rounded-2xl border border-outline-variant/30 bg-surface-container-lowest p-5 shadow-sm"
@@ -216,17 +216,18 @@ export default async function ResultDetailPage() {
                   </span>
                 </div>
                 <span className="font-headline text-xl font-semibold text-primary">
-                  {metric.score}%
+                  <AnimatedNumber value={metric.score} delayMs={index * 90} />
                 </span>
               </div>
               <h4 className="font-semibold">{metric.title}</h4>
               <p className="mt-2 text-sm text-on-surface-variant">
                 {metric.detail}
               </p>
-              <div className="mt-4 h-1 overflow-hidden rounded-full bg-surface-container">
-                <div
-                  className="h-full rounded-full bg-primary"
-                  style={{ width: `${metric.score}%` }}
+              <div className="mt-4">
+                <AnimatedMeter
+                  value={metric.score}
+                  delayMs={index * 90}
+                  heightClass="h-1"
                 />
               </div>
             </article>
@@ -256,6 +257,33 @@ export default async function ResultDetailPage() {
             </div>
           ))}
         </div>
+
+        <section className="mt-10 flex items-center gap-4 rounded-3xl border border-primary/15 bg-surface-container-lowest p-5 shadow-[var(--elevation-soft)]">
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border-4 border-surface-container-lowest shadow-[0_12px_28px_rgba(0,80,73,0.16)]">
+            <Image
+              src={brandImages.consultantPortrait.src}
+              alt={brandImages.consultantPortrait.alt}
+              fill
+              sizes="80px"
+              className="object-cover object-top"
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-headline text-lg font-semibold text-primary">
+              Next steps with context
+            </p>
+            <p className="mt-1 text-sm leading-6 text-on-surface-variant">
+              Bring this report to a clinic conversation and ask which screening
+              is appropriate for your age group and family history.
+            </p>
+          </div>
+          <Link
+            href="/recommendations"
+            className="hidden rounded-full bg-primary px-5 py-3 text-sm font-semibold text-on-primary md:inline-flex"
+          >
+            Review plan
+          </Link>
+        </section>
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link

@@ -1,7 +1,9 @@
 import { cookies } from "next/headers";
+import Image from "next/image";
 import { AppHeader } from "@/components/AppHeader";
 import { Disclaimer } from "@/components/Disclaimer";
 import { PrivacyConsentForm } from "@/components/PrivacyConsentForm";
+import { brandImages } from "@/lib/brand-images";
 import {
   parsePrivacyConsent,
   PRIVACY_CONSENT_COOKIE,
@@ -19,13 +21,34 @@ export default async function PrivacyPage() {
     <div className="flex min-h-screen flex-col">
       <AppHeader backHref="/" />
       <main className="mx-auto w-full max-w-2xl flex-grow px-5 py-10">
-        <h2 className="font-headline text-3xl font-bold text-on-surface">
+        <h2 className="sihatq-fade-up font-headline text-3xl font-bold text-on-surface">
           Privacy Notice
         </h2>
-        <p className="mt-3 text-on-surface-variant">
+        <p className="sihatq-fade-up sihatq-delay-1 mt-3 text-on-surface-variant">
           Please read this notice before building your health profile. No profile
           fields are shown until you give consent.
         </p>
+
+        <div className="sihatq-fade-up sihatq-delay-2 mt-8 flex items-center gap-4 rounded-3xl border border-primary/12 bg-surface-container-lowest p-4 shadow-[var(--elevation-soft)]">
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border-4 border-surface-container-lowest shadow-[0_12px_28px_rgba(0,80,73,0.14)]">
+            <Image
+              src={brandImages.privacyDashboard.src}
+              alt={brandImages.privacyDashboard.alt}
+              fill
+              sizes="80px"
+              className="object-cover"
+            />
+          </div>
+          <div>
+            <p className="font-headline text-lg font-semibold text-primary">
+              Full data control
+            </p>
+            <p className="mt-1 text-sm leading-6 text-on-surface-variant">
+              Consent unlocks the profile form. You can withdraw later and stop
+              further collection for this session.
+            </p>
+          </div>
+        </div>
 
         <div className="mt-8 space-y-5 rounded-2xl bg-surface-container p-6">
           <section>

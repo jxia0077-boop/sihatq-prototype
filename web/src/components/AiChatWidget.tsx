@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PlanCard } from "@/components/PlanCard";
@@ -38,6 +38,9 @@ const HIDDEN_PATHS = [
   "/sign-up",
   "/start-alt",
   "/ai-assistant",
+  "/privacy",
+  "/profile",
+  "/analyzing",
 ];
 
 function shouldHideWidget(pathname: string) {
@@ -46,16 +49,14 @@ function shouldHideWidget(pathname: string) {
 
 export function AiChatWidget() {
   const pathname = usePathname();
+  const reactId = useId();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [liveThinking, setLiveThinking] = useState<ThinkingStep[]>([]);
   const thinkingRef = useRef<ThinkingStep[]>([]);
-  const sessionIdRef = useRef(
-    typeof crypto !== "undefined" && "randomUUID" in crypto
-      ? crypto.randomUUID()
-      : `sess-${Date.now()}`,
-  );
+  const messageIdRef = useRef(0);
+  const sessionIdRef = useRef(`sihatq-widget-${reactId.replace(/:/g, "")}`);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome-1",
@@ -83,6 +84,11 @@ export function AiChatWidget() {
   }, [messages, open, loading, liveThinking]);
 
   if (hidden) return null;
+
+  function nextMessageId(prefix: string) {
+    messageIdRef.current += 1;
+    return `${prefix}-${messageIdRef.current}`;
+  }
 
   async function runChat(
     message: string,
@@ -127,7 +133,7 @@ export function AiChatWidget() {
 
       if (data.kind === "plan") {
         const planMsg: ChatMessage = {
-          id: options?.replaceId || `a-${Date.now()}`,
+          id: options?.replaceId || nextMessageId("a"),
           role: "assistant",
           content: data.reply,
           thinking: data.thinking,
@@ -149,7 +155,7 @@ export function AiChatWidget() {
       }
 
       const doneMsg: ChatMessage = {
-        id: options?.replaceId || `a-${Date.now()}`,
+        id: options?.replaceId || nextMessageId("a"),
         role: "assistant",
         content: data.reply,
         thinking: data.thinking,
@@ -169,7 +175,7 @@ export function AiChatWidget() {
       });
     } catch (error) {
       const errMsg = {
-        id: `e-${Date.now()}`,
+        id: nextMessageId("e"),
         role: "assistant" as const,
         content:
           error instanceof Error
@@ -202,7 +208,7 @@ export function AiChatWidget() {
     setInput("");
     setMessages((current) => [
       ...current,
-      { id: `u-${Date.now()}`, role: "user", content: message },
+      { id: nextMessageId("u"), role: "user", content: message },
     ]);
     await runChat(message);
   }
